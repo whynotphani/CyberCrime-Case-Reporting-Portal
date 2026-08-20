@@ -125,7 +125,7 @@ async function loadCitizenMilestoneHistory() {
 
           return `
             <div class="timeline-item">
-              <div class="timeline-dot"></div>
+              <div class="timeline-marker"></div>
               <div class="timeline-content">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
                   <span class="badge badge-status-${item.status}">${displayStatus}</span>

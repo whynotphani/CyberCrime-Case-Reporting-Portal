@@ -127,12 +127,16 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   font-size: 0.88rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .file-item .file-info {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex: 1;
+  min-width: 200px;
 }
 
 .timeline {
@@ -196,3 +200,32 @@
   font-size: 0.88rem;
   color: var(--text-muted);
 }
+
+@media (max-width: 480px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem !important;
+  }
+
+  .category-card {
+    padding: 0.85rem 0.5rem !important;
+  }
+
+  .category-card .icon {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .category-card .title {
+    font-size: 0.78rem !important;
+  }
+
+  .auth-wrapper {
+    padding: 1rem 0.5rem;
+  }
+
+  .auth-card {
+    padding: 1.25rem !important;
+  }
+}
+

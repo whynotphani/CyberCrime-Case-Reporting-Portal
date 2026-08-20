@@ -12,13 +12,13 @@
   <nav class="navbar">
     <a href="index.html" class="brand">
       <div class="brand-icon">🔍</div>
-      <div>CyberCrime <span class="highlight">Case Status Tracker</span></div>
+      <div>CyberCrime <span class="highlight">Status Tracker</span></div>
     </a>
-    <div style="display: flex; align-items: center; gap: 1.25rem;">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="citizen-portal.html" class="nav-link">Complaint & Evidence Portal</a>
-      <button id="logoutStatusBtn" class="btn btn-sm btn-secondary">Logout</button>
-    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">🏠 Home</a></li>
+      <li><a href="citizen-portal.html" class="nav-link">📂 Citizen Portal</a></li>
+      <li><button id="logoutStatusBtn" class="btn btn-sm btn-secondary">Logout</button></li>
+    </ul>
   </nav>
 
   <div class="container" style="max-width: 960px; padding-top: 2rem;">
@@ -111,7 +111,7 @@
       <h3 style="font-size: 1.15rem; color: var(--accent-cyan); margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
         📝 Incident Details & Suspect Clues
       </h3>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+      <div class="form-row-grid" style="margin-bottom: 1.25rem;">
         <div>
           <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">COMPLAINT TITLE</span>
           <strong id="statusComplaintTitle" style="color: #fff; font-size: 1.05rem;">-</strong>
@@ -154,6 +154,7 @@
   </div>
 
   <script src="js/api.js"></script>
+  <script src="js/mobile-nav.js"></script>
   <script src="js/citizen-status.js"></script>
 </body>
 </html>

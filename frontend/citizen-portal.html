@@ -14,14 +14,12 @@
       <div class="brand-icon">📁</div>
       <div>Citizen Case <span class="highlight">Evidence Portal</span></div>
     </a>
-    <div style="display: flex; align-items: center; gap: 1.25rem;">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="citizen-status.html" class="nav-link" style="color: var(--accent-cyan); font-weight: 600;">🔍 Track Case Status</a>
-      <div style="font-size: 0.88rem; color: var(--text-muted);">
-        Case: <strong id="headerCaseNumber" style="color: var(--accent-cyan); font-family: monospace;">-</strong>
-      </div>
-      <button id="logoutBtn" class="btn btn-sm btn-secondary">Logout</button>
-    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">🏠 Home</a></li>
+      <li><a href="citizen-status.html" class="nav-link" style="color: var(--accent-cyan); font-weight: 600;">🔍 Track Status</a></li>
+      <li><span style="font-size: 0.85rem; color: var(--text-muted);">Case: <strong id="headerCaseNumber" style="color: var(--accent-cyan); font-family: monospace;">-</strong></span></li>
+      <li><button id="logoutBtn" class="btn btn-sm btn-secondary">Logout</button></li>
+    </ul>
   </nav>
 
   <div class="container">
@@ -36,7 +34,7 @@
         </p>
       </div>
       <div>
-        <span style="font-size: 0.82rem; color: var(--text-dim); display: block; margin-bottom: 0.25rem; text-align: right;">Current Investigation Status:</span>
+        <span style="font-size: 0.82rem; color: var(--text-dim); display: block; margin-bottom: 0.25rem;">Current Investigation Status:</span>
         <span id="caseStatusBadge" class="badge badge-status-VERIFICATION_PENDING">VERIFICATION PENDING</span>
       </div>
     </div>
@@ -52,7 +50,7 @@
       </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 340px; gap: 1.75rem;">
+    <div class="portal-layout-grid">
       
       <div>
         
@@ -104,7 +102,7 @@
               <input type="text" id="complaintTitle" class="form-control" placeholder="e.g. Unauthorized Bank Transfer via Phishing Link" required minlength="3">
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-row-grid">
               <div class="form-group">
                 <label for="incidentDate">Date & Time of Incident</label>
                 <input type="datetime-local" id="incidentDate" class="form-control">
@@ -123,7 +121,7 @@
 
             <h4 style="font-size: 1rem; color: #fff; margin: 1.5rem 0 0.75rem;">Suspect Information (If Available)</h4>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-row-grid">
               <div class="form-group">
                 <label for="suspectName">Suspect Name / Fake Identity</label>
                 <input type="text" id="suspectName" class="form-control" placeholder="e.g. Alex Trader / Customer Care Fake">
@@ -135,7 +133,7 @@
               </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-row-grid">
               <div class="form-group">
                 <label for="bankDetails">Suspect Bank Account / UPI ID</label>
                 <input type="text" id="bankDetails" class="form-control" placeholder="e.g. fraud@upi / HDFC 501000...">
@@ -224,6 +222,7 @@
   </div>
 
   <script src="js/api.js"></script>
+  <script src="js/mobile-nav.js"></script>
   <script src="js/citizen-portal.js"></script>
 </body>
 </html>

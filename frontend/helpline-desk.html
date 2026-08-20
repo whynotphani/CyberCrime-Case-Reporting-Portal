@@ -46,7 +46,7 @@
 
       <form id="helplineForm">
         
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-row-grid">
           <div class="form-group">
             <label for="fullName">Victim Full Name *</label>
             <input type="text" id="fullName" class="form-control" placeholder="e.g. Ramesh Kumar" required minlength="2">
@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-row-grid">
           <div class="form-group">
             <label for="initialCategory">Complaint Category *</label>
             <select id="initialCategory" class="form-control" required>
@@ -86,7 +86,7 @@
           <textarea id="description" class="form-control" placeholder="Brief initial details reported by victim during verification call..." rows="3" required minlength="5"></textarea>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-row-grid">
           <div class="form-group">
             <label for="idProofType">ID Proof Type (Optional)</label>
             <select id="idProofType" class="form-control">
@@ -167,6 +167,7 @@
   </div>
 
   <script src="js/api.js"></script>
+  <script src="js/mobile-nav.js"></script>
   <script src="js/helpline.js"></script>
 </body>
 </html>

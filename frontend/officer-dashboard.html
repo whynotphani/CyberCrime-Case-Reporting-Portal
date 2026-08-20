@@ -13,13 +13,13 @@
   <nav class="navbar">
     <a href="index.html" class="brand">
       <div class="brand-icon">🕵️‍♂️</div>
-      <div>CyberCrime <span class="highlight">Officer Review Dashboard</span></div>
+      <div>CyberCrime <span class="highlight">Officer Portal</span></div>
     </a>
-    <div style="display: flex; align-items: center; gap: 1.25rem;">
-      <a href="index.html" class="nav-link">Home</a>
-      <span class="officer-badge-pill" id="officerNameBadge">Officer Logged In</span>
-      <button id="logoutOfficerBtn" class="btn btn-sm btn-secondary">Logout</button>
-    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">🏠 Home</a></li>
+      <li><span class="officer-badge-pill" id="officerNameBadge">Officer Logged In</span></li>
+      <li><button id="logoutOfficerBtn" class="btn btn-sm btn-secondary">Logout</button></li>
+    </ul>
   </nav>
 
   <div class="container" style="max-width: 1320px;">
@@ -103,7 +103,8 @@
 
     </div>
 
-    <div class="glass-card" style="padding: 0; overflow: hidden;">
+    <!-- Desktop Table View -->
+    <div class="glass-card desktop-table-container" style="padding: 0; overflow: hidden;">
       <div class="table-responsive">
         <table class="data-table">
           <thead>
@@ -122,6 +123,10 @@
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- Mobile Case Cards View -->
+    <div id="mobileCaseCardsList" class="mobile-case-cards-container">
     </div>
 
   </div>
@@ -202,7 +207,7 @@
       <div style="border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
         <h4 style="font-size: 1.05rem; color: var(--accent-gold); margin-bottom: 1rem;">Take Investigation Action</h4>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <div class="form-row-grid" style="gap: 1.5rem;">
           
           <form id="updateStatusForm" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md);">
             <h5 style="font-size: 0.95rem; margin-bottom: 0.75rem;">Update Case Status & Priority</h5>
@@ -264,6 +269,7 @@
   </div>
 
   <script src="js/api.js"></script>
+  <script src="js/mobile-nav.js"></script>
   <script src="js/officer-dashboard.js"></script>
 </body>
 </html>

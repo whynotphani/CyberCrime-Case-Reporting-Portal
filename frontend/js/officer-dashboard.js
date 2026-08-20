@@ -105,41 +105,94 @@ function updateMetrics(cases) {
 
 function renderCaseTable(cases) {
   const tbody = document.getElementById('caseTableBody');
-  if (!tbody) return;
+  const mobileContainer = document.getElementById('mobileCaseCardsList');
 
   if (cases.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="8" style="text-align:center; padding: 2.5rem; color:var(--text-muted);">
+    if (tbody) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align:center; padding: 2.5rem; color:var(--text-muted);">
+            No cybercrime cases match the active filter criteria.
+          </td>
+        </tr>
+      `;
+    }
+    if (mobileContainer) {
+      mobileContainer.innerHTML = `
+        <div style="text-align:center; padding: 2rem; color:var(--text-muted); font-size:0.9rem;">
           No cybercrime cases match the active filter criteria.
-        </td>
-      </tr>
-    `;
+        </div>
+      `;
+    }
     return;
   }
 
-  tbody.innerHTML = cases.map(c => {
-    const dateStr = c.submittedAt ? new Date(c.submittedAt).toLocaleDateString() : new Date(c.createdAt).toLocaleDateString();
-    const assigned = c.assignedOfficer ? c.assignedOfficer.name : 'Unassigned';
-    const lossStr = `₹${c.lossAmount ? Number(c.lossAmount).toLocaleString('en-IN') : '0'}`;
+  // Render Desktop Data Table
+  if (tbody) {
+    tbody.innerHTML = cases.map(c => {
+      const dateStr = c.submittedAt ? new Date(c.submittedAt).toLocaleDateString() : new Date(c.createdAt).toLocaleDateString();
+      const assigned = c.assignedOfficer ? c.assignedOfficer.name : 'Unassigned';
+      const lossStr = `₹${c.lossAmount ? Number(c.lossAmount).toLocaleString('en-IN') : '0'}`;
 
-    return `
-      <tr>
-        <td class="case-id-cell">${c.caseNumber}</td>
-        <td>${c.category}</td>
-        <td><span class="badge badge-priority-${c.priority}">${c.priority}</span></td>
-        <td style="font-size:0.85rem; color:var(--text-muted);">${dateStr}</td>
-        <td><span class="badge badge-status-${c.status}">${c.status.replace(/_/g, ' ')}</span></td>
-        <td style="font-size:0.88rem; font-weight:600; color:var(--accent-gold);">${lossStr}</td>
-        <td style="font-size:0.85rem; color:var(--text-muted);">${assigned}</td>
-        <td>
-          <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
-            Review Case
-          </button>
-        </td>
-      </tr>
-    `;
-  }).join('');
+      return `
+        <tr>
+          <td class="case-id-cell">${c.caseNumber}</td>
+          <td>${c.category}</td>
+          <td><span class="badge badge-priority-${c.priority}">${c.priority}</span></td>
+          <td style="font-size:0.85rem; color:var(--text-muted);">${dateStr}</td>
+          <td><span class="badge badge-status-${c.status}">${c.status.replace(/_/g, ' ')}</span></td>
+          <td style="font-size:0.88rem; font-weight:600; color:var(--accent-gold);">${lossStr}</td>
+          <td style="font-size:0.85rem; color:var(--text-muted);">${assigned}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
+              Review Case
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // Render Mobile Case Cards View
+  if (mobileContainer) {
+    mobileContainer.innerHTML = cases.map(c => {
+      const dateStr = c.submittedAt ? new Date(c.submittedAt).toLocaleDateString() : new Date(c.createdAt).toLocaleDateString();
+      const assigned = c.assignedOfficer ? c.assignedOfficer.name : 'Unassigned';
+      const lossStr = `₹${c.lossAmount ? Number(c.lossAmount).toLocaleString('en-IN') : '0'}`;
+
+      return `
+        <div class="officer-mobile-card">
+          <div class="card-top">
+            <span class="case-number">${c.caseNumber}</span>
+            <span class="badge badge-status-${c.status}">${c.status.replace(/_/g, ' ')}</span>
+          </div>
+
+          <h4 class="card-title">${c.category}</h4>
+          
+          <div class="card-meta">
+            <div>
+              <span class="label">Priority / Severity</span>
+              <span class="badge badge-priority-${c.priority}">${c.priority}</span>
+            </div>
+            <div>
+              <span class="label">Financial Loss</span>
+              <strong style="color:var(--accent-gold); font-size:0.9rem;">${lossStr}</strong>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <div style="font-size:0.78rem; color:var(--text-muted);">
+              <div>Date: ${dateStr}</div>
+              <div>Expert: ${assigned}</div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
+              Review Case →
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
 }
 
 async function openCaseModal(caseNumber) {

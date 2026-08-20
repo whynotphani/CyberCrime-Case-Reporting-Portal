@@ -25,15 +25,31 @@ const API = {
     return true;
   },
 
-  request: async (endpoint, options = {}) => {
-    const token = API.getToken();
+  request: async (endpoint, optionsOrMethod = 'GET', data = null, customHeaders = {}) => {
+    let options = {};
+    if (typeof optionsOrMethod === 'object' && optionsOrMethod !== null && !(optionsOrMethod instanceof FormData)) {
+      options = { ...optionsOrMethod };
+    } else {
+      options.method = typeof optionsOrMethod === 'string' ? optionsOrMethod : 'GET';
+      if (data !== null && data !== undefined) {
+        if (data instanceof FormData) {
+          options.body = data;
+        } else {
+          options.body = JSON.stringify(data);
+        }
+      }
+      if (customHeaders && typeof customHeaders === 'object') {
+        options.headers = customHeaders;
+      }
+    }
 
+    const token = API.getToken();
     const headers = options.headers || {};
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    if (!(options.body instanceof FormData)) {
+    if (!(options.body instanceof FormData) && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json';
     }
 
@@ -44,13 +60,13 @@ const API = {
 
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-      const data = await response.json();
+      const resData = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'An unexpected error occurred.');
+        throw new Error(resData.message || 'An unexpected error occurred.');
       }
 
-      return data;
+      return resData;
     } catch (error) {
       console.error('[API Error]', error);
       throw error;
