@@ -76,4 +76,6 @@ const seedOfficers = async () => {
   }
 };
 
-seedOfficers();
+if (require.main === module) {
+  seedOfficers();
+}

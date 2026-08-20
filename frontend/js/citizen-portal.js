@@ -34,12 +34,12 @@ async function loadCitizenCaseData() {
     const res = await API.request('/api/citizen/case');
     if (res.success) {
       const caseData = res.data.case;
-      const citizenData = caseData.citizen;
+      const citizenData = caseData.citizen || {};
       const evidenceList = res.data.evidence;
 
       document.getElementById('headerCaseNumber').innerText = caseData.caseNumber;
       document.getElementById('victimName').innerText = citizenData.fullName || 'Victim';
-      document.getElementById('victimPhone').innerText = citizenData.phone;
+      document.getElementById('victimPhone').innerText = citizenData.phone || 'N/A';
 
       const statusBadge = document.getElementById('caseStatusBadge');
       statusBadge.innerText = caseData.status.replace(/_/g, ' ');

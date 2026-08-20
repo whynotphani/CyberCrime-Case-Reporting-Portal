@@ -109,8 +109,8 @@ exports.verifyCitizenOtp = async (req, res, next) => {
         data: {
           caseNumber: caseDoc.caseNumber,
           status: caseDoc.status,
-          citizenName: caseDoc.citizen.fullName,
-          phone: caseDoc.citizen.phone,
+          citizenName: caseDoc.citizen?.fullName || 'Citizen',
+          phone: caseDoc.citizen?.phone || '',
           role: 'citizen'
         }
       });

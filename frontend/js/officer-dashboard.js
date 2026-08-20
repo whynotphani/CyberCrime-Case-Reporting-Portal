@@ -121,6 +121,7 @@ function renderCaseTable(cases) {
   tbody.innerHTML = cases.map(c => {
     const dateStr = c.submittedAt ? new Date(c.submittedAt).toLocaleDateString() : new Date(c.createdAt).toLocaleDateString();
     const assigned = c.assignedOfficer ? c.assignedOfficer.name : 'Unassigned';
+    const lossStr = `₹${c.lossAmount ? Number(c.lossAmount).toLocaleString('en-IN') : '0'}`;
 
     return `
       <tr>
@@ -129,7 +130,7 @@ function renderCaseTable(cases) {
         <td><span class="badge badge-priority-${c.priority}">${c.priority}</span></td>
         <td style="font-size:0.85rem; color:var(--text-muted);">${dateStr}</td>
         <td><span class="badge badge-status-${c.status}">${c.status.replace(/_/g, ' ')}</span></td>
-        <td><span class="badge badge-priority-${c.priority}">${c.priority}</span></td>
+        <td style="font-size:0.88rem; font-weight:600; color:var(--accent-gold);">${lossStr}</td>
         <td style="font-size:0.85rem; color:var(--text-muted);">${assigned}</td>
         <td>
           <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">

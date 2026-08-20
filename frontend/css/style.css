@@ -115,6 +115,7 @@ a:hover {
 .brand span.highlight {
   background: linear-gradient(90deg, #60a5fa, var(--accent-cyan));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 

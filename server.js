@@ -55,9 +55,18 @@ app.get('/', (req, res) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`===========================================================`);
   console.log(`  CyberCrime Case Reporting Portal Server Started!`);
   console.log(`  Access Frontend Portal: http://localhost:${PORT}`);
   console.log(`===========================================================`);
 });
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`[Server Error] Port ${PORT} is already in use. Please free port ${PORT} or set PORT in .env`);
+  } else {
+    console.error('[Server Error]', err);
+  }
+});
+
