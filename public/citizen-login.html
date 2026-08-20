@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Authentication — CyberCrime Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/citizen.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">🔑</div>
+      <div>CyberCrime <span class="highlight">Citizen Portal</span></div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="helpline-desk.html" class="nav-link">Helpline Desk</a></li>
+      <li><a href="citizen-login.html" class="nav-link active">Citizen Login</a></li>
+      <li><a href="officer-login.html" class="nav-link">Officer Login</a></li>
+    </ul>
+  </nav>
+
+  <div class="auth-wrapper">
+    <div class="glass-card auth-card">
+      
+      <div class="auth-header">
+        <div class="icon-circle">🔐</div>
+        <span class="badge badge-status-SUBMITTED" style="margin-bottom: 0.5rem;">Stage 2 — Authentication</span>
+        <h2>Access Case Portal</h2>
+        <p>Enter the Case Registration Number and 6-digit OTP code provided during Helpline 1930 verification.</p>
+      </div>
+
+      <form id="citizenLoginForm">
+        
+        <div class="form-group">
+          <label for="caseNumber">Case Registration Number</label>
+          <input type="text" id="caseNumber" class="form-control" placeholder="e.g. CC-20260820-8472" required style="font-family: monospace; letter-spacing: 0.05em; font-size: 1.05rem;">
+        </div>
+
+        <div class="form-group">
+          <label for="otpCode" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>6-Digit Verification OTP</span>
+            <button type="button" id="resendOtpBtn" style="background: none; border: none; color: var(--accent-cyan); cursor: pointer; font-size: 0.82rem; font-weight: 600; text-decoration: underline;">
+              ⚡ Request New OTP
+            </button>
+          </label>
+          <input type="text" id="otpCode" class="form-control" placeholder="e.g. 584910" required maxlength="6" style="font-family: monospace; letter-spacing: 0.25em; font-size: 1.25rem; text-align: center;">
+        </div>
+
+        <div id="otpDisplayBanner" style="display: none; margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(245, 158, 11, 0.15); border: 1px dashed var(--accent-gold); border-radius: var(--radius-sm); text-align: center;">
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Your New 6-Digit OTP Code:</span>
+          <div id="newOtpValue" style="font-family: monospace; font-size: 1.6rem; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.2em; margin-top: 0.25rem;">-</div>
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+          <button type="submit" class="btn btn-primary btn-full" style="font-size: 1rem; padding: 0.85rem;">
+            Verify OTP & Enter Case Portal
+          </button>
+        </div>
+
+      </form>
+
+      <div style="margin-top: 1.75rem; text-align: center; padding-top: 1.25rem; border-top: 1px solid var(--border-color); font-size: 0.85rem; color: var(--text-muted);">
+        Don't have a Case Registration Number? <br>
+        <a href="helpline-desk.html" style="color: var(--accent-cyan); font-weight: 600;">Initiate case via Helpline 1930 Desk</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/citizen-auth.js"></script>
+</body>
+</html>

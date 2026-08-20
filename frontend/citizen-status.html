@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Investigation Status — Citizen Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/citizen.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">🔍</div>
+      <div>CyberCrime <span class="highlight">Case Status Tracker</span></div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 1.25rem;">
+      <a href="citizen-portal.html" class="nav-link">Complaint & Evidence Portal</a>
+      <button id="logoutStatusBtn" class="btn btn-sm btn-secondary">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container" style="max-width: 960px; padding-top: 2rem;">
+    
+    <!-- Status Header Card -->
+    <div class="glass-card" style="margin-bottom: 1.75rem; border-left: 4px solid var(--accent-cyan);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+            CASE TRACKING DASHBOARD
+          </span>
+          <h2 style="font-size: 1.75rem; font-family: monospace; color: var(--accent-cyan); margin-top: 0.25rem;" id="statusCaseNumber">
+            CC-000000
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.35rem;">
+            Victim: <strong id="statusCitizenName" style="color: #fff;">-</strong> • Contact: <span id="statusCitizenPhone" style="color: #fff;">-</span>
+          </p>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 0.35rem;">CURRENT INVESTIGATION STATUS</span>
+          <span id="statusBadge" class="badge badge-status-SUBMITTED" style="font-size: 1rem; padding: 0.45rem 1rem;">SUBMITTED</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assigned Officer Card -->
+    <div class="glass-card" style="margin-bottom: 1.75rem; border-left: 4px solid #8b5cf6;">
+      <h3 style="font-size: 1.15rem; color: #a78bfa; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>🕵️‍♂️</span> Assigned Cybercrime Investigating Officer
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem;">
+        <div style="background: rgba(10, 16, 28, 0.6); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">OFFICER NAME</span>
+          <strong id="statusOfficerName" style="color: #fff; font-size: 1.05rem;">Unassigned</strong>
+        </div>
+        <div style="background: rgba(10, 16, 28, 0.6); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">BADGE NUMBER</span>
+          <strong id="statusOfficerBadge" style="color: var(--accent-cyan); font-family: monospace;">-</strong>
+        </div>
+        <div style="background: rgba(10, 16, 28, 0.6); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">ASSIGNED CELL / DEPT</span>
+          <strong id="statusOfficerDept" style="color: #fff;">-</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Officer Remarks & Action Items Card -->
+    <div class="glass-card" style="margin-bottom: 1.75rem; background: rgba(245, 158, 11, 0.08); border: 1px dashed var(--accent-gold);">
+      <h3 style="font-size: 1.1rem; color: var(--accent-gold); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>💬</span> Officer Investigation Instructions & Remarks
+      </h3>
+      <p id="statusOfficerRemarks" style="color: #f3f4f6; font-size: 0.95rem; line-height: 1.6; margin: 0.5rem 0 0.25rem; font-weight: 500;">
+        No specific officer instructions posted yet.
+      </p>
+    </div>
+
+    <!-- Case Metadata Grid -->
+    <div class="glass-card" style="margin-bottom: 1.75rem;">
+      <h3 style="font-size: 1.15rem; color: var(--accent-cyan); margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+        📌 Case Identification & Metadata
+      </h3>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem;">
+        
+        <div style="background: rgba(10, 16, 28, 0.6); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">CRIME CATEGORY</span>
+          <strong id="statusCategory" style="color: var(--accent-cyan); font-size: 1.05rem;">-</strong>
+        </div>
+
+        <div style="background: rgba(10, 16, 28, 0.6); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">PRIORITY LEVEL</span>
+          <span id="statusPriority" class="badge badge-priority-MEDIUM">MEDIUM</span>
+        </div>
+
+        <div style="background: rgba(10, 16, 28, 0.6); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">SUBMISSION DATE</span>
+          <strong id="statusSubmissionDate" style="color: #fff;">-</strong>
+        </div>
+
+        <div style="background: rgba(10, 16, 28, 0.6); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">LAST UPDATED DATE</span>
+          <strong id="statusLastUpdated" style="color: #fff;">-</strong>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Case Details & Suspect Summary Card -->
+    <div class="glass-card" style="margin-bottom: 1.75rem;">
+      <h3 style="font-size: 1.15rem; color: var(--accent-cyan); margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+        📝 Incident Details & Suspect Clues
+      </h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+        <div>
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">COMPLAINT TITLE</span>
+          <strong id="statusComplaintTitle" style="color: #fff; font-size: 1.05rem;">-</strong>
+        </div>
+        <div>
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">FINANCIAL LOSS AMOUNT</span>
+          <strong id="statusLossAmount" style="color: var(--accent-gold); font-size: 1.05rem;">N/A</strong>
+        </div>
+      </div>
+
+      <div style="background: rgba(10, 16, 28, 0.6); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1.25rem; word-break: break-word; overflow-wrap: anywhere;">
+        <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">INCIDENT DESCRIPTION</span>
+        <p id="statusDescription" style="color: var(--text-main); font-size: 0.9rem; margin: 0; white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;">-</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+        <div style="background: rgba(10, 16, 28, 0.6); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); word-break: break-word; overflow-wrap: anywhere; min-width: 0;">
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">SUSPECT NAME / PHONE</span>
+          <span id="statusSuspectNamePhone" style="color: #fff; font-weight: 600; word-break: break-word; overflow-wrap: anywhere; display: block;">-</span>
+        </div>
+        <div style="background: rgba(10, 16, 28, 0.6); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); word-break: break-all; overflow-wrap: anywhere; min-width: 0;">
+          <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">SUSPECT BANK / UPI / URL</span>
+          <span id="statusSuspectBankUrl" style="color: var(--accent-cyan); font-weight: 600; word-break: break-all; overflow-wrap: anywhere; display: block;">-</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Milestone History Timeline -->
+    <div class="glass-card">
+      <h3 style="font-size: 1.15rem; color: var(--accent-cyan); margin-bottom: 0.5rem;">
+        ⏱️ Investigation Milestone & Status History
+      </h3>
+      <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">
+        Official audit trail of investigation milestones recorded by cybercrime officers.
+      </p>
+
+      <div id="statusTimeline" class="timeline"></div>
+    </div>
+
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/citizen-status.js"></script>
+</body>
+</html>

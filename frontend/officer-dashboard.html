@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberCrime Officer Review Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/officer.css">
+  <link rel="stylesheet" href="css/citizen.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">🕵️‍♂️</div>
+      <div>CyberCrime <span class="highlight">Officer Review Dashboard</span></div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 1.25rem;">
+      <span class="officer-badge-pill" id="officerNameBadge">Officer Logged In</span>
+      <button id="logoutOfficerBtn" class="btn btn-sm btn-secondary">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container" style="max-width: 1320px;">
+    
+    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+      <div class="stat-card">
+        <div class="stat-icon blue">📁</div>
+        <div class="stat-data">
+          <h3 id="metricTotal">0</h3>
+          <p>Total Cases</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon gold">🆕</div>
+        <div class="stat-data">
+          <h3 id="metricNew">0</h3>
+          <p>New Cases</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon red">🚨</div>
+        <div class="stat-data">
+          <h3 id="metricHighPriority">0</h3>
+          <p>High Priority Cases</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon blue" style="background: rgba(6,182,212,0.15); color:var(--accent-cyan);">🔍</div>
+        <div class="stat-data">
+          <h3 id="metricUnderReview">0</h3>
+          <p>Cases Under Review</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon green">✅</div>
+        <div class="stat-data">
+          <h3 id="metricResolvedClosed">0</h3>
+          <p>Resolved / Closed</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      
+      <div class="filter-group" style="flex: 1; min-width: 250px;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by Case Number or Keyword...">
+      </div>
+
+      <div class="filter-group">
+        <select id="categoryFilter" class="form-control" style="width: 180px;">
+          <option value="">All Categories</option>
+          <option value="Financial Fraud">Financial Fraud</option>
+          <option value="Non-Financial Cybercrime">Non-Financial Cybercrime</option>
+          <option value="Mobile Theft/Loss">Mobile Theft/Loss</option>
+          <option value="Online Harassment">Online Harassment</option>
+          <option value="Social Media Crime">Social Media Crime</option>
+          <option value="Other Cybercrime">Other Cybercrime</option>
+        </select>
+
+        <select id="priorityFilter" class="form-control" style="width: 140px;">
+          <option value="">All Priorities</option>
+          <option value="HIGH">High Priority</option>
+          <option value="MEDIUM">Medium Priority</option>
+          <option value="LOW">Low Priority</option>
+        </select>
+
+        <select id="statusFilter" class="form-control" style="width: 180px;">
+          <option value="">All Case Statuses</option>
+          <option value="VERIFICATION_PENDING">Verification Pending</option>
+          <option value="SUBMITTED">Submitted</option>
+          <option value="UNDER_INVESTIGATION">Under Investigation</option>
+          <option value="ASSIGNED">Assigned</option>
+          <option value="RESOLVED">Resolved</option>
+          <option value="CLOSED">Closed</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="glass-card" style="padding: 0; overflow: hidden;">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Case Registration Number</th>
+              <th>Crime Category</th>
+              <th>Severity</th>
+              <th>Submission Date</th>
+              <th>Current Status</th>
+              <th>Priority</th>
+              <th>Assigned Expert</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="caseTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="caseDetailModal" class="modal-overlay">
+    <div class="modal-card modal-lg" style="max-height: 90vh; overflow-y: auto;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+        <div>
+          <span style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">CASE INVESTIGATION REVIEW</span>
+          <h3 style="font-size: 1.5rem;" id="modalCaseNumber">CC-000000</h3>
+        </div>
+        <button id="closeDetailModalBtn" class="btn btn-sm btn-secondary">✕ Close</button>
+      </div>
+
+      <div class="detail-section">
+        <h4>1. Victim & Crime Metadata</h4>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <label>Victim Name</label>
+            <span id="detailVictimName">-</span>
+          </div>
+          <div class="detail-item">
+            <label>Phone Number</label>
+            <span id="detailVictimPhone">-</span>
+          </div>
+          <div class="detail-item">
+            <label>Email</label>
+            <span id="detailVictimEmail">-</span>
+          </div>
+          <div class="detail-item">
+            <label>ID Proof</label>
+            <span id="detailIdProof">-</span>
+          </div>
+          <div class="detail-item">
+            <label>Category</label>
+            <span id="detailCategory">-</span>
+          </div>
+          <div class="detail-item">
+            <label>Priority</label>
+            <span id="detailPriority" class="badge badge-priority-MEDIUM">MEDIUM</span>
+          </div>
+          <div class="detail-item">
+            <label>Status</label>
+            <span id="detailStatus" class="badge badge-status-SUBMITTED">SUBMITTED</span>
+          </div>
+          <div class="detail-item">
+            <label>Reported Loss Amount</label>
+            <span id="detailLossAmount" style="color: var(--accent-gold); font-weight: 700;">₹0</span>
+          </div>
+          <div class="detail-item">
+            <label>Incident Timestamp</label>
+            <span id="detailIncidentDate">-</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h4>2. Crime Description & Suspect Clues</h4>
+        <p id="detailDescription" style="color: var(--text-muted); font-size: 0.92rem; background: rgba(10,16,28,0.7); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;">
+          -
+        </p>
+        <div style="background: rgba(10,16,28,0.7); padding: 1rem; border-radius: var(--radius-sm); font-size: 0.9rem;" id="detailSuspect">
+          -
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h4>3. Uploaded Digital Evidence Archives</h4>
+        <div id="modalEvidenceList"></div>
+      </div>
+
+      <div class="detail-section">
+        <h4>4. Audit Trail & Investigation Log</h4>
+        <div id="modalHistoryList"></div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+        <h4 style="font-size: 1.05rem; color: var(--accent-gold); margin-bottom: 1rem;">Take Investigation Action</h4>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          
+          <form id="updateStatusForm" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md);">
+            <h5 style="font-size: 0.95rem; margin-bottom: 0.75rem;">Update Case Status & Priority</h5>
+            
+            <div class="form-group">
+              <label>Investigation Status</label>
+              <select id="updateStatusSelect" class="form-control">
+                <option value="UNDER_REVIEW">Under Review</option>
+                <option value="ASSIGNED">Assigned to Specialist</option>
+                <option value="UNDER_INVESTIGATION">Under Investigation</option>
+                <option value="ADDITIONAL_INFO_REQUIRED">Additional Info Required</option>
+                <option value="RESOLVED">Resolved / Action Taken</option>
+                <option value="CLOSED">Closed</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Priority Override</label>
+              <select id="updatePrioritySelect" class="form-control">
+                <option value="HIGH">High Priority</option>
+                <option value="MEDIUM">Medium Priority</option>
+                <option value="LOW">Low Priority</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Officer Audit Remarks</label>
+              <input type="text" id="updateRemarksInput" class="form-control" placeholder="Remarks for case file audit trail..." required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full btn-sm" style="margin-top: 0.5rem;">
+              Update Status
+            </button>
+          </form>
+
+          <form id="assignOfficerForm" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md);">
+            <h5 style="font-size: 0.95rem; margin-bottom: 0.75rem;">Forward / Assign to Cyber Expert</h5>
+
+            <div class="form-group">
+              <label>Select Cyber Crime Expert</label>
+              <select id="targetOfficerSelect" class="form-control" required>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Assignment Instructions</label>
+              <input type="text" id="assignRemarksInput" class="form-control" placeholder="Special instructions for assigned officer...">
+            </div>
+
+            <button type="submit" class="btn btn-accent btn-full btn-sm" style="margin-top: 0.5rem;">
+              Assign & Forward Case
+            </button>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/officer-dashboard.js"></script>
+</body>
+</html>

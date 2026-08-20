@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberCrime Case Reporting Portal — Home</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">🛡️</div>
+      <div>CyberCrime <span class="highlight">Case</span> Reporting Portal</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link active">Home</a></li>
+      <li><a href="helpline-desk.html" class="nav-link">Helpline Desk (1930)</a></li>
+      <li><a href="citizen-login.html" class="nav-link">Citizen Login</a></li>
+      <li><a href="officer-login.html" class="nav-link">Officer Portal</a></li>
+    </ul>
+  </nav>
+
+  <div class="container" style="padding-top: 3.5rem; text-align: center;">
+
+    <div style="max-width: 800px; margin: 0 auto 3rem;">
+      <span class="badge badge-status-SUBMITTED" style="margin-bottom: 1rem;">Official Academic Prototype</span>
+      <h1 style="font-size: 2.8rem; margin-bottom: 1.25rem; line-height: 1.2;">
+        Fast-Track Cybercrime Verification & Digital Evidence Submission
+      </h1>
+      <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.7;">
+        Eliminating physical visits and waiting queues at cybercrime police stations. Registered victims can submit case
+        evidence online and track investigation progress in real time.
+      </p>
+    </div>
+
+    <!-- Workflow Interactive Grid -->
+    <div
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; text-align: left; margin-bottom: 4rem;">
+
+      <!-- Helpline Desk Card -->
+      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">📞</div>
+          <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem;">Helpline Verification</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+            Victim contacts Helpline 1930. Operator verifies complaint eligibility and generates a unique Case
+            Registration Number & OTP.
+          </p>
+        </div>
+        <a href="helpline-desk.html" class="btn btn-accent btn-full">Access 1930 Helpline Desk</a>
+      </div>
+
+      <!-- Citizen Login Card -->
+      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🔑</div>
+          <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem;">Portal Authentication</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+            Victim opens portal, enters Case Registration Number & OTP. Backend verifies OTP and generates a secure JWT
+            session.
+          </p>
+        </div>
+        <a href="citizen-login.html" class="btn btn-primary btn-full">Citizen OTP Verification</a>
+      </div>
+
+      <!-- Evidence Submission Card -->
+      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">📂</div>
+          <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem;">Evidence Submission</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+            Select cybercrime category, fill incident details, upload screenshots, bank statements, chat logs, or videos
+            securely.
+          </p>
+        </div>
+        <a href="citizen-portal.html" class="btn btn-emerald btn-full">Citizen Case Application Portal</a>
+      </div>
+
+      <!-- Officer Review Card -->
+      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🕵️‍♂️</div>
+          <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem;">Officer Review</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+            Authorized cybercrime officers inspect evidence, assign priority levels, update investigation status, and
+            forward cases.
+          </p>
+        </div>
+        <a href="officer-login.html" class="btn btn-purple btn-full">Officer Dashboard Login</a>
+      </div>
+
+    </div>
+
+    <!-- Key System Features Footer Banner -->
+    <div class="glass-card"
+      style="background: rgba(18, 26, 43, 0.4); text-align: left; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem; align-items: center;">
+      <div>
+        <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem;">🔒 Security & Privacy Guarantees</h4>
+        <p style="color: var(--text-muted); font-size: 0.88rem;">
+          Protected evidence directory, JWT role validation, encrypted officer credentials, and 10-minute auto-expiring
+          OTPs.
+        </p>
+      </div>
+      <div>
+        <span class="badge badge-priority-LOW">Node.js + Express</span>
+        <span class="badge badge-priority-MEDIUM">MongoDB</span>
+        <span class="badge badge-priority-HIGH">JWT + OTP</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Officer Authentication — CyberCrime Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/citizen.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">👮</div>
+      <div>CyberCrime <span class="highlight">Officer Portal</span></div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="helpline-desk.html" class="nav-link">Helpline Desk</a></li>
+      <li><a href="citizen-login.html" class="nav-link">Citizen Login</a></li>
+      <li><a href="officer-login.html" class="nav-link active">Officer Login</a></li>
+    </ul>
+  </nav>
+
+  <div class="auth-wrapper">
+    <div class="glass-card auth-card">
+      
+      <div class="auth-header">
+        <div class="icon-circle" style="background: rgba(6, 182, 212, 0.12); color: var(--accent-cyan); border-color: rgba(6, 182, 212, 0.3);">👮</div>
+        <span class="badge badge-priority-HIGH" style="margin-bottom: 0.5rem;">Stage 4 — Officer Portal</span>
+        <h2>Cyber Cell Officer Access</h2>
+        <p>Restricted access for authorized Cybercrime Police personnel and forensic experts.</p>
+      </div>
+
+      <form id="officerLoginForm">
+        
+        <div class="form-group">
+          <label for="identifier">Badge Number or Email *</label>
+          <input type="text" id="identifier" class="form-control" placeholder="e.g. CYBER-8841 or rajesh.kumar@cyber.gov.in" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Security Password *</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+          <button type="submit" class="btn btn-accent btn-full" style="font-size: 1rem; padding: 0.85rem;">
+            Authenticate Officer Session
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Demo Accounts Card -->
+      <div style="margin-top: 1.75rem; background: rgba(10, 16, 28, 0.8); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 1rem; font-size: 0.82rem;">
+        <strong style="color: var(--accent-gold); display: block; margin-bottom: 0.4rem;">🔑 Demo Officer Credentials (College Prototype):</strong>
+        <div style="color: var(--text-muted);">
+          • Badge: <code style="color:var(--accent-cyan)">CYBER-8841</code> | Password: <code style="color:#fff">password123</code> (Financial Fraud)<br>
+          • Badge: <code style="color:var(--accent-cyan)">CYBER-9912</code> | Password: <code style="color:#fff">password123</code> (Cyber HQ Admin)<br>
+          • Badge: <code style="color:var(--accent-cyan)">marpuphani00@gmail.com</code> | Password: <code style="color:#fff">password123</code> (Social Media Cell)
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    document.getElementById('officerLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const identifier = document.getElementById('identifier').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await API.request('/api/auth/officer/login', {
+          method: 'POST',
+          body: JSON.stringify({ identifier, password })
+        });
+
+        if (res.success) {
+          API.setToken(res.token);
+          API.setUserRole('officer');
+          showToast('Officer Login Successful! Redirecting...', 'success');
+          setTimeout(() => { window.location.href = 'officer-dashboard.html'; }, 1000);
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    });
+  </script>
+</body>
+</html>

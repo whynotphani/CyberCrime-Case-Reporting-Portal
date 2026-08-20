@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helpline 1930 Verification Desk — CyberCrime Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/citizen.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">📞</div>
+      <div>CyberCrime <span class="highlight">1930 Helpline Desk</span></div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="helpline-desk.html" class="nav-link active">Helpline Desk</a></li>
+      <li><a href="citizen-login.html" class="nav-link">Citizen Login</a></li>
+      <li><a href="officer-login.html" class="nav-link">Officer Login</a></li>
+    </ul>
+  </nav>
+
+  <div class="container" style="max-width: 750px; padding-top: 2rem;">
+    
+    <div class="glass-card">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+        <div>
+          <span class="badge badge-priority-HIGH">Stage 1 — Verification</span>
+          <h2 style="font-size: 1.6rem; margin-top: 0.5rem;">1930 Helpline Citizen Triage Desk</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">
+            Recorded by Cybercrime Helpline Personnel upon victim call verification.
+          </p>
+        </div>
+        <div style="font-size: 2.2rem;">🎧</div>
+      </div>
+
+      <form id="helplineForm">
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="fullName">Victim Full Name *</label>
+            <input type="text" id="fullName" class="form-control" placeholder="e.g. Ramesh Kumar" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Victim Phone Number *</label>
+            <input type="tel" id="phone" class="form-control" placeholder="e.g. 9876543210" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="email">Email Address (Optional)</label>
+            <input type="email" id="email" class="form-control" placeholder="e.g. ramesh@example.com">
+          </div>
+
+          <div class="form-group">
+            <label for="initialCategory">Preliminary Cybercrime Category</label>
+            <select id="initialCategory" class="form-control">
+              <option value="Financial Fraud">Financial Fraud</option>
+              <option value="Non-Financial Cybercrime">Non-Financial Cybercrime</option>
+              <option value="Mobile Theft/Loss">Mobile Theft/Loss</option>
+              <option value="Online Harassment">Online Harassment</option>
+              <option value="Social Media Crime">Social Media Crime</option>
+              <option value="Other Cybercrime">Other Cybercrime</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="idProofType">ID Proof Type</label>
+            <select id="idProofType" class="form-control">
+              <option value="AADHAAR">Aadhaar Card</option>
+              <option value="PAN">PAN Card</option>
+              <option value="VOTER_ID">Voter ID</option>
+              <option value="DRIVING_LICENSE">Driving License</option>
+              <option value="OTHER">Other Identification</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="idProofNumber">ID Proof Number</label>
+            <input type="text" id="idProofNumber" class="form-control" placeholder="e.g. XXXX-XXXX-1234">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Residential Address</label>
+          <textarea id="address" class="form-control" placeholder="Victim residential city/state address..." rows="2"></textarea>
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+          <button type="submit" class="btn btn-primary btn-full" style="font-size: 1rem; padding: 0.9rem;">
+            Generate Case Registration Number & OTP
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+  <!-- Stage 1 Output Modal -->
+  <div id="resultModal" class="modal-overlay">
+    <div class="modal-card">
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <div style="width: 56px; height: 56px; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; font-size: 1.8rem;">
+          ✓
+        </div>
+        <h3 style="font-size: 1.5rem;">Case Initiated Successfully!</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem;">
+          Provide the generated Case Registration Number and OTP to the victim to authenticate on the citizen portal.
+        </p>
+      </div>
+
+      <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+          <span style="color: var(--text-muted); font-size: 0.88rem;">Victim Name:</span>
+          <strong id="resCitizenName" style="color: #fff;">-</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+          <span style="color: var(--text-muted); font-size: 0.88rem;">Phone Number:</span>
+          <span id="resPhone" style="color: #fff;">-</span>
+        </div>
+        <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 0.75rem 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <span style="color: var(--accent-cyan); font-weight: 600; font-size: 0.9rem;">Case Registration No:</span>
+          <span id="resCaseNumber" style="font-family: monospace; font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); background: rgba(6,182,212,0.15); padding: 0.25rem 0.6rem; border-radius: 4px;">-</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="color: var(--accent-gold); font-weight: 600; font-size: 0.9rem;">Generated OTP Code:</span>
+          <span id="resOtp" style="font-family: monospace; font-size: 1.4rem; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.15em; background: rgba(245,158,11,0.15); padding: 0.25rem 0.75rem; border-radius: 4px;">-</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="citizen-login.html" class="btn btn-primary" style="flex: 1;">Proceed to Citizen Portal Login</a>
+        <button id="closeModalBtn" class="btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/helpline.js"></script>
+</body>
+</html>
