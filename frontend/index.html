@@ -25,82 +25,118 @@
     </ul>
   </nav>
 
-  <!-- Hero Section -->
-  <div class="container" style="padding-top: 2.5rem; text-align: center;">
+  <div class="container" style="padding-top: 1.5rem;">
 
-    <div style="max-width: 850px; margin: 0 auto 2.5rem;">
-      <span class="badge badge-status-SUBMITTED" style="margin-bottom: 1rem; padding: 0.4rem 1rem; font-size: 0.85rem;">
-        ⚡ Official Fast-Track Academic Prototype
-      </span>
-      <h1 class="hero-title" style="font-size: 2.75rem; margin-bottom: 1rem; line-height: 1.25;">
-        Fast-Track Cybercrime Verification & Digital Evidence Submission
-      </h1>
-      <p class="hero-subtitle" style="color: var(--text-muted); font-size: 1.08rem; line-height: 1.7; max-width: 720px; margin: 0 auto 1.75rem;">
-        Eliminating physical visits and long queues at cybercrime police stations. Registered victims can submit incident evidence online and monitor case investigation status in real time.
-      </p>
+    <!-- Organized Desktop Hero Section -->
+    <div class="desktop-hero-container">
+      
+      <!-- Left Hero Content -->
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(6,182,212,0.12); border: 1px solid rgba(6,182,212,0.3); padding: 0.35rem 0.9rem; border-radius: 50px; margin-bottom: 1.25rem;">
+          <span style="font-size: 0.85rem; color: var(--accent-cyan); font-weight: 700;">⚡ Official Cybercrime Verification Portal</span>
+        </div>
 
-      <!-- Quick Action Navigation Hub -->
-      <div style="display: flex; flex-wrap: wrap; gap: 0.85rem; justify-content: center; margin-bottom: 1rem;">
-        <a href="helpline-desk.html" class="btn btn-accent" style="padding: 0.85rem 1.4rem; font-size: 0.95rem;">
-          📞 1930 Helpline Triage
-        </a>
-        <a href="citizen-login.html" class="btn btn-primary" style="padding: 0.85rem 1.4rem; font-size: 0.95rem;">
-          🔑 Citizen OTP Access
-        </a>
-        <a href="officer-login.html" class="btn btn-purple" style="padding: 0.85rem 1.4rem; font-size: 0.95rem;">
-          🕵️ Officer Dashboard
-        </a>
+        <h1 class="hero-title" style="font-size: 2.85rem; margin-bottom: 1.15rem; line-height: 1.2; font-weight: 800;">
+          Fast-Track Cybercrime Verification & Digital Evidence Submission
+        </h1>
+
+        <p class="hero-subtitle" style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+          Eliminating physical station queues. Registered victims can securely submit bank statements, screenshots, and chat logs online while tracking investigation progress in real time.
+        </p>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+          <a href="helpline-desk.html" class="btn btn-accent" style="padding: 0.85rem 1.5rem; font-size: 0.95rem;">
+            📞 1930 Helpline Triage Desk
+          </a>
+          <a href="citizen-login.html" class="btn btn-primary" style="padding: 0.85rem 1.5rem; font-size: 0.95rem;">
+            🔑 Citizen OTP Portal Access
+          </a>
+          <a href="officer-login.html" class="btn btn-purple" style="padding: 0.85rem 1.5rem; font-size: 0.95rem;">
+            🕵️ Officer Review Portal
+          </a>
+        </div>
       </div>
+
+      <!-- Right Desktop Live Preview Card -->
+      <div class="glass-card" style="border: 1px solid var(--accent-cyan); background: rgba(10, 16, 28, 0.85); box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.85rem; margin-bottom: 1.15rem;">
+          <span style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.05em;">SYSTEM DASHBOARD STATUS</span>
+          <span class="badge badge-priority-HIGH" style="font-size: 0.75rem;">LIVE 1930</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.9rem;">
+          <div style="background: rgba(255,255,255,0.03); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Helpline Incident Triage</span>
+            <span style="font-size: 0.85rem; color: var(--accent-emerald); font-weight: 600;">24/7 Active</span>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.03); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Verification Security</span>
+            <span style="font-size: 0.85rem; color: var(--accent-gold); font-weight: 600;">10-Min OTP Expiry</span>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.03); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Digital Evidence Storage</span>
+            <span style="font-size: 0.85rem; color: var(--accent-cyan); font-weight: 600;">Encrypted Archives</span>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.03); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Investigating Officers</span>
+            <span style="font-size: 0.85rem; color: #fff; font-weight: 600;">Real-Time Updates</span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Live System Metrics Bar -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 3rem;">
-      <div class="glass-card" style="padding: 1rem; text-align: center; background: rgba(18, 26, 43, 0.6);">
-        <div style="font-size: 1.5rem; color: var(--accent-cyan); margin-bottom: 0.25rem;">24 / 7</div>
-        <div style="font-size: 0.82rem; color: var(--text-muted);">Helpline Triage Active</div>
+    <div class="home-metrics-grid">
+      <div class="glass-card" style="padding: 1.15rem; text-align: center; background: rgba(18, 26, 43, 0.6);">
+        <div style="font-size: 1.6rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.25rem;">24 / 7</div>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Helpline Triage Desk</div>
       </div>
-      <div class="glass-card" style="padding: 1rem; text-align: center; background: rgba(18, 26, 43, 0.6);">
-        <div style="font-size: 1.5rem; color: var(--accent-gold); margin-bottom: 0.25rem;">10 Min</div>
-        <div style="font-size: 0.82rem; color: var(--text-muted);">Auto-Expiring OTP</div>
+      <div class="glass-card" style="padding: 1.15rem; text-align: center; background: rgba(18, 26, 43, 0.6);">
+        <div style="font-size: 1.6rem; color: var(--accent-gold); font-weight: 800; margin-bottom: 0.25rem;">10 Min</div>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Auto-Expiring OTP Code</div>
       </div>
-      <div class="glass-card" style="padding: 1rem; text-align: center; background: rgba(18, 26, 43, 0.6);">
-        <div style="font-size: 1.5rem; color: var(--accent-emerald); margin-bottom: 0.25rem;">100% Digital</div>
-        <div style="font-size: 0.82rem; color: var(--text-muted);">Evidence Storage</div>
+      <div class="glass-card" style="padding: 1.15rem; text-align: center; background: rgba(18, 26, 43, 0.6);">
+        <div style="font-size: 1.6rem; color: var(--accent-emerald); font-weight: 800; margin-bottom: 0.25rem;">100% Digital</div>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Evidence Storage Vault</div>
       </div>
-      <div class="glass-card" style="padding: 1rem; text-align: center; background: rgba(18, 26, 43, 0.6);">
-        <div style="font-size: 1.5rem; color: var(--primary); margin-bottom: 0.25rem;">Real-Time</div>
-        <div style="font-size: 0.82rem; color: var(--text-muted);">Officer Status Updates</div>
+      <div class="glass-card" style="padding: 1.15rem; text-align: center; background: rgba(18, 26, 43, 0.6);">
+        <div style="font-size: 1.6rem; color: var(--primary); font-weight: 800; margin-bottom: 0.25rem;">Real-Time</div>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Officer Status Trail</div>
       </div>
     </div>
 
-    <!-- Step-by-Step Action Cards Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; text-align: left; margin-bottom: 3rem;">
+    <!-- Organized 4-Column Action Cards Grid -->
+    <div class="home-step-grid">
 
-      <!-- Helpline Card -->
+      <!-- Step 1 Card -->
       <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
             <span class="badge badge-priority-HIGH">Step 1</span>
             <span style="font-size: 1.8rem;">🎧</span>
           </div>
-          <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">1930 Helpline Triage</h3>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.6rem; color: #fff;">1930 Helpline Triage</h3>
           <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem; line-height: 1.6;">
             Victim reports cyber incident to Helpline 1930. The operator registers initial details and generates a 6-digit verification OTP code.
           </p>
         </div>
         <a href="helpline-desk.html" class="btn btn-accent btn-full">
-          Open Helpline Operator Desk →
+          Open Helpline Desk →
         </a>
       </div>
 
-      <!-- Citizen Login Card -->
+      <!-- Step 2 Card -->
       <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
             <span class="badge badge-status-SUBMITTED">Step 2</span>
             <span style="font-size: 1.8rem;">🔐</span>
           </div>
-          <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Citizen OTP Access</h3>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.6rem; color: #fff;">Citizen OTP Access</h3>
           <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem; line-height: 1.6;">
             Enter Case Registration Number & 6-digit OTP code to verify your session and access the complaint filing portal securely.
           </p>
@@ -110,14 +146,14 @@
         </a>
       </div>
 
-      <!-- Citizen Portal Card -->
+      <!-- Step 3 Card -->
       <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
             <span class="badge badge-priority-MEDIUM">Step 3</span>
             <span style="font-size: 1.8rem;">📂</span>
           </div>
-          <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Submit Evidence & Tracking</h3>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.6rem; color: #fff;">Evidence & Tracking</h3>
           <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem; line-height: 1.6;">
             Fill detailed complaint form, upload bank statements, chat logs, screenshots, or video proof, and track timeline status.
           </p>
@@ -127,14 +163,14 @@
         </a>
       </div>
 
-      <!-- Officer Review Card -->
+      <!-- Step 4 Card -->
       <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
             <span class="badge badge-priority-HIGH">Step 4</span>
             <span style="font-size: 1.8rem;">🕵️‍♂️</span>
           </div>
-          <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Officer Investigation Desk</h3>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.6rem; color: #fff;">Officer Review Desk</h3>
           <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem; line-height: 1.6;">
             Investigating officers inspect uploaded digital evidence, update priority severity, assign experts, and post remarks.
           </p>
