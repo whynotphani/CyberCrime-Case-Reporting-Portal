@@ -18,7 +18,7 @@
     <ul class="nav-links">
       <li><a href="index.html" class="nav-link">🏠 Home</a></li>
       <li><a href="officer-dashboard.html" class="nav-link active">🕵️ Officer Portal</a></li>
-      <li><button id="manageCredentialsNavBtn" class="nav-link" style="display: none; border: none; background: transparent; cursor: pointer; font-family: inherit;">👥 Manage Officers</button></li>
+      <li><button id="manageCredentialsNavBtn" class="nav-link active" style="display: none; border: none; font-family: inherit; cursor: pointer;">👥 Manage Officers</button></li>
       <li><span class="officer-badge-pill" id="officerNameBadge">Officer Logged In</span></li>
       <li><button id="logoutOfficerBtn" class="btn btn-sm btn-secondary">Logout</button></li>
     </ul>
@@ -347,6 +347,36 @@
         #manageCredentialsModal .data-table tr:hover td {
           background: rgba(255, 255, 255, 0.04);
         }
+
+        @media (max-width: 768px) {
+          #manageCredentialsModal .modal-card {
+            width: 95vw !important;
+            max-height: 92vh !important;
+            padding: 1rem !important;
+            margin: 0.5rem auto !important;
+          }
+          #credentialSearchInput {
+            max-width: 100% !important;
+            width: 100% !important;
+          }
+          #addNewOfficerBtn {
+            width: 100% !important;
+          }
+          .desktop-credentials-table {
+            display: none !important;
+          }
+          .mobile-credentials-list {
+            display: block !important;
+          }
+        }
+        @media (min-width: 769px) {
+          .desktop-credentials-table {
+            display: block !important;
+          }
+          .mobile-credentials-list {
+            display: none !important;
+          }
+        }
       </style>
       
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
@@ -428,8 +458,8 @@
         </form>
       </div>
 
-      <!-- Officers Table -->
-      <div class="table-responsive" style="scrollbar-width: none; -ms-overflow-style: none;">
+      <!-- Desktop Officers Table -->
+      <div class="table-responsive desktop-credentials-table" style="scrollbar-width: none; -ms-overflow-style: none;">
         <table class="data-table">
           <thead>
             <tr>
@@ -444,11 +474,15 @@
         </table>
       </div>
 
+      <!-- Mobile Officers Card List -->
+      <div id="mobileCredentialsList" class="mobile-credentials-list">
+      </div>
+
     </div>
   </div>
 
   <script src="js/api.js"></script>
   <script src="js/mobile-nav.js"></script>
-  <script src="js/officer-dashboard.js?v=3.6"></script>
+  <script src="js/officer-dashboard.js?v=3.7"></script>
 </body>
 </html>

@@ -604,6 +604,42 @@ function renderCredentialsTable(list) {
       </tr>
     `;
   }).join('');
+
+  // Render Mobile Cards View for Officers
+  const mobileContainer = document.getElementById('mobileCredentialsList');
+  if (mobileContainer) {
+    if (filtered.length === 0) {
+      mobileContainer.innerHTML = `
+        <div style="text-align:center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">
+          No officer credentials found.
+        </div>
+      `;
+    } else {
+      mobileContainer.innerHTML = filtered.map(o => {
+        return `
+          <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 0.85rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.65rem;">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <div style="width: 36px; height: 36px; background: rgba(6,182,212,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; border: 1px solid rgba(6,182,212,0.3);">👮‍♂️</div>
+                <div>
+                  <div style="font-weight: 700; color: #fff; font-size: 0.96rem; font-family: var(--font-heading);">${o.name}</div>
+                  <div style="font-size: 0.78rem; color: var(--accent-cyan); font-family: monospace;">${o.badgeNumber}</div>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-accent" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; font-weight: 600;" onclick="openEditOfficerForm('${o._id || o.officerId}')">
+                ✏️ Edit
+              </button>
+            </div>
+
+            <div style="font-size: 0.85rem; color: #e2e8f0; background: rgba(0,0,0,0.2); padding: 0.5rem 0.75rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.04);">
+              <div style="color: var(--text-muted); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; margin-bottom: 0.1rem;">Department</div>
+              <div style="font-weight: 600; color: #fff;">${o.department || 'Financial Fraud Cell'}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
 }
 
 function toggleShowPassword(inputId) {
