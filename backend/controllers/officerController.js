@@ -296,9 +296,19 @@ exports.getAllCredentials = async (req, res, next) => {
     const isMongoConnected = mongoose.connection.readyState === 1;
     let officers;
     if (isMongoConnected) {
-      officers = await Officer.find({}, 'name badgeNumber role department email officerId createdAt');
+      officers = await Officer.find({}, 'name badgeNumber role department email officerId plainPassword createdAt');
     } else {
-      officers = store.officers.map(o => ({ _id: o._id, officerId: o.officerId, name: o.name, badgeNumber: o.badgeNumber, role: o.role, department: o.department, email: o.email, createdAt: o.createdAt }));
+      officers = store.officers.map(o => ({
+        _id: o._id,
+        officerId: o.officerId,
+        name: o.name,
+        badgeNumber: o.badgeNumber,
+        role: o.role,
+        department: o.department,
+        email: o.email,
+        plainPassword: o.plainPassword || (o.email === 'marpuphani00@gmail.com' ? 'phani@2005' : 'password123'),
+        createdAt: o.createdAt
+      }));
     }
     return res.status(200).json({ success: true, data: officers });
   } catch (error) {
@@ -332,8 +342,9 @@ exports.createOfficerCredential = async (req, res, next) => {
       badgeNumber,
       email: email.trim().toLowerCase(),
       passwordHash,
+      plainPassword: password,
       role: role || 'INVESTIGATING_OFFICER',
-      department: department || 'Cybercrime Department',
+      department: department || 'Financial Fraud Cell',
       createdAt: new Date()
     };
 
@@ -379,7 +390,10 @@ exports.updateOfficerCredential = async (req, res, next) => {
       if (email) off.email = email.trim().toLowerCase();
       if (department) off.department = department;
       if (role) off.role = role;
-      if (password) off.password = await bcrypt.hash(password, 10);
+      if (password) {
+        off.password = await bcrypt.hash(password, 10);
+        off.plainPassword = password;
+      }
 
       await off.save();
       return res.status(200).json({ success: true, message: `Officer credentials updated successfully.`, data: off });
@@ -393,7 +407,10 @@ exports.updateOfficerCredential = async (req, res, next) => {
       if (email) off.email = email.trim().toLowerCase();
       if (department) off.department = department;
       if (role) off.role = role;
-      if (password) off.passwordHash = await bcrypt.hash(password, 10);
+      if (password) {
+        off.passwordHash = await bcrypt.hash(password, 10);
+        off.plainPassword = password;
+      }
 
       return res.status(200).json({ success: true, message: `Officer credentials updated successfully.`, data: off });
     }

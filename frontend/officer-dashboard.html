@@ -327,7 +327,10 @@
 
   <!-- Manage Credentials Pop-up Portal (Restricted to marpuphani00@gmail.com) -->
   <div id="manageCredentialsModal" class="modal-overlay">
-    <div class="modal-card modal-lg" style="max-width: 920px; max-height: 90vh; overflow-y: auto;">
+    <div class="modal-card modal-lg" style="max-width: 950px; max-height: 90vh; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
+      <style>
+        #manageCredentialsModal .modal-card::-webkit-scrollbar { display: none; }
+      </style>
       
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
         <div>
@@ -370,12 +373,21 @@
 
             <div class="form-group">
               <label for="offPasswordInput">Password <span id="passReqLabel">*</span></label>
-              <input type="password" id="offPasswordInput" class="form-control" placeholder="Min 6 characters...">
+              <input type="text" id="offPasswordInput" class="form-control" placeholder="Enter password (visible to Super Admin)">
             </div>
 
             <div class="form-group">
-              <label for="offDeptInput">Department</label>
-              <input type="text" id="offDeptInput" class="form-control" placeholder="e.g. Financial Fraud Cell">
+              <label for="offDeptSelect">Cybercrime Department *</label>
+              <select id="offDeptSelect" class="form-control" required>
+                <option value="Financial Fraud Cell">1. Financial Fraud Cell</option>
+                <option value="Cyber Crime Headquarters">2. Cyber Crime Headquarters</option>
+                <option value="Mobile & Hardware Forensics">3. Mobile & Hardware Forensics</option>
+                <option value="Online Harassment & Social Media Cell">4. Online Harassment & Social Media Cell</option>
+                <option value="Cybercrime Special Task Force">5. Cybercrime Special Task Force</option>
+                <option value="Cryptocurrency & Dark Web Intelligence">6. Cryptocurrency & Dark Web Intelligence</option>
+                <option value="Corporate BEC & Phishing Investigation Cell">7. Corporate BEC & Phishing Investigation Cell</option>
+                <option value="Identity Theft & Ransomware Response Unit">8. Identity Theft & Ransomware Response Unit</option>
+              </select>
             </div>
 
             <div class="form-group">
@@ -395,13 +407,14 @@
       </div>
 
       <!-- Officers Table -->
-      <div class="table-responsive">
+      <div class="table-responsive" style="scrollbar-width: none; -ms-overflow-style: none;">
         <table class="data-table">
           <thead>
             <tr>
               <th>Officer Name</th>
               <th>Badge No.</th>
               <th>Login Email</th>
+              <th>Password</th>
               <th>Department</th>
               <th>Role</th>
               <th>Action</th>
@@ -418,6 +431,6 @@
 
   <script src="js/api.js"></script>
   <script src="js/mobile-nav.js"></script>
-  <script src="js/officer-dashboard.js?v=3.1"></script>
+  <script src="js/officer-dashboard.js?v=3.2"></script>
 </body>
 </html>

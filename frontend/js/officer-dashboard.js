@@ -562,7 +562,7 @@ function renderCredentialsTable(list) {
   if (filtered.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="6" style="text-align:center; padding: 2rem; color: var(--text-muted);">
+        <td colspan="7" style="text-align:center; padding: 2rem; color: var(--text-muted);">
           No officer credentials found.
         </td>
       </tr>
@@ -572,12 +572,20 @@ function renderCredentialsTable(list) {
 
   tbody.innerHTML = filtered.map(o => {
     const isSelf = o.email && o.email.toLowerCase() === 'marpuphani00@gmail.com';
+    const pwd = o.plainPassword || (isSelf ? 'phani@2005' : 'password123');
+
     return `
       <tr>
         <td style="font-weight: 600; color: #fff;">${o.name}</td>
         <td><span class="badge" style="background: rgba(6,182,212,0.15); color: var(--accent-cyan);">${o.badgeNumber}</span></td>
         <td style="font-family: monospace; font-size: 0.88rem; color: var(--text-main);">${o.email}</td>
-        <td style="font-size: 0.85rem; color: var(--text-muted);">${o.department || 'N/A'}</td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 0.35rem;">
+            <input type="password" readonly value="${pwd}" id="pwdInput_${o._id || o.officerId}" style="background: rgba(15,23,42,0.6); border: 1px solid var(--border-color); color: #f59e0b; font-family: monospace; font-size: 0.85rem; padding: 0.2rem 0.4rem; border-radius: 4px; width: 100px;">
+            <button type="button" class="btn btn-sm btn-secondary" style="padding: 0.15rem 0.4rem; font-size: 0.75rem;" onclick="toggleShowPassword('pwdInput_${o._id || o.officerId}')">👁️</button>
+          </div>
+        </td>
+        <td style="font-size: 0.85rem; color: var(--text-muted);">${o.department || 'Financial Fraud Cell'}</td>
         <td><span class="badge ${o.role === 'ADMIN' ? 'badge-priority-HIGH' : 'badge-status-SUBMITTED'}">${o.role}</span></td>
         <td>
           <div style="display: flex; gap: 0.35rem;">
@@ -590,13 +598,25 @@ function renderCredentialsTable(list) {
   }).join('');
 }
 
+function toggleShowPassword(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+  } else {
+    input.type = 'password';
+  }
+}
+
 function resetOfficerForm() {
   document.getElementById('editOfficerId').value = '';
   document.getElementById('offNameInput').value = '';
   document.getElementById('offBadgeInput').value = '';
   document.getElementById('offEmailInput').value = '';
   document.getElementById('offPasswordInput').value = '';
-  document.getElementById('offDeptInput').value = '';
+  if (document.getElementById('offDeptSelect')) {
+    document.getElementById('offDeptSelect').value = 'Financial Fraud Cell';
+  }
   document.getElementById('offRoleSelect').value = 'INVESTIGATING_OFFICER';
 }
 
@@ -608,12 +628,16 @@ function openEditOfficerForm(id) {
   document.getElementById('offNameInput').value = off.name || '';
   document.getElementById('offBadgeInput').value = off.badgeNumber || '';
   document.getElementById('offEmailInput').value = off.email || '';
-  document.getElementById('offPasswordInput').value = '';
-  document.getElementById('offDeptInput').value = off.department || '';
+  document.getElementById('offPasswordInput').value = off.plainPassword || (off.email === 'marpuphani00@gmail.com' ? 'phani@2005' : 'password123');
+
+  if (document.getElementById('offDeptSelect')) {
+    document.getElementById('offDeptSelect').value = off.department || 'Financial Fraud Cell';
+  }
+
   document.getElementById('offRoleSelect').value = off.role || 'INVESTIGATING_OFFICER';
 
   document.getElementById('officerFormTitle').innerText = `Edit Credential for ${off.name}`;
-  document.getElementById('passReqLabel').innerText = '(Optional - Leave blank to keep current password)';
+  document.getElementById('passReqLabel').innerText = '(Optional - Edit or keep current password)';
   document.getElementById('offPasswordInput').required = false;
 
   document.getElementById('officerFormContainer').style.display = 'block';
@@ -626,7 +650,7 @@ async function handleSaveOfficerCredential(e) {
   const badgeNumber = document.getElementById('offBadgeInput').value.trim();
   const email = document.getElementById('offEmailInput').value.trim();
   const password = document.getElementById('offPasswordInput').value.trim();
-  const department = document.getElementById('offDeptInput').value.trim();
+  const department = document.getElementById('offDeptSelect') ? document.getElementById('offDeptSelect').value : 'Financial Fraud Cell';
   const role = document.getElementById('offRoleSelect').value;
 
   const bodyData = { name, badgeNumber, email, department, role };

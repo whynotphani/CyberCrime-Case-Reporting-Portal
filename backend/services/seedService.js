@@ -21,6 +21,7 @@ async function seedOfficers() {
       badgeNumber: 'CYBER-2005',
       email: 'marpuphani00@gmail.com',
       passwordHash: customPasswordHash,
+      plainPassword: 'phani@2005',
       role: 'ADMIN',
       department: 'Cybercrime Special Task Force',
       createdAt: new Date()
@@ -32,6 +33,7 @@ async function seedOfficers() {
       badgeNumber: 'CYBER-8841',
       email: 'rajesh.kumar@cyber.gov.in',
       passwordHash: defaultPasswordHash,
+      plainPassword: 'password123',
       role: 'INVESTIGATING_OFFICER',
       department: 'Financial Fraud Cell',
       createdAt: new Date()
@@ -43,6 +45,7 @@ async function seedOfficers() {
       badgeNumber: 'CYBER-9912',
       email: 'anita.sharma@cyber.gov.in',
       passwordHash: defaultPasswordHash,
+      plainPassword: 'password123',
       role: 'ADMIN',
       department: 'Cyber Crime Headquarters',
       createdAt: new Date()
@@ -54,6 +57,7 @@ async function seedOfficers() {
       badgeNumber: 'CYBER-4402',
       email: 'vikram.singh@cyber.gov.in',
       passwordHash: defaultPasswordHash,
+      plainPassword: 'password123',
       role: 'INVESTIGATING_OFFICER',
       department: 'Mobile & Hardware Forensics',
       createdAt: new Date()
@@ -65,6 +69,7 @@ async function seedOfficers() {
       badgeNumber: 'CYBER-6619',
       email: 'priya.verma@cyber.gov.in',
       passwordHash: defaultPasswordHash,
+      plainPassword: 'password123',
       role: 'INVESTIGATING_OFFICER',
       department: 'Online Harassment & Social Media Cell',
       createdAt: new Date()
