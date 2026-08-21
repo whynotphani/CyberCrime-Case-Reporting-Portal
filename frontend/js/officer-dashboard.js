@@ -562,7 +562,7 @@ function renderCredentialsTable(list) {
   if (filtered.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="7" style="text-align:center; padding: 2rem; color: var(--text-muted);">
+        <td colspan="3" style="text-align:center; padding: 2.5rem; color: var(--text-muted);">
           No officer credentials found.
         </td>
       </tr>
@@ -572,34 +572,34 @@ function renderCredentialsTable(list) {
 
   tbody.innerHTML = filtered.map(o => {
     const isSelf = o.email && o.email.toLowerCase() === 'marpuphani00@gmail.com';
-    const pwd = o.plainPassword || (isSelf ? 'phani@2005' : 'password123');
 
     return `
       <tr>
-        <td style="font-weight: 600; color: #fff; padding-left: 1.25rem;">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="font-size: 1.05rem;">👮‍♂️</span>
-            <span>${o.name}</span>
+        <td style="padding: 1.1rem 1.25rem;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 38px; height: 38px; background: rgba(6,182,212,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0; border: 1px solid rgba(6,182,212,0.3);">👮‍♂️</div>
+            <div>
+              <div style="font-weight: 700; color: #fff; font-size: 0.98rem; font-family: var(--font-heading);">${o.name}</div>
+              <div style="font-size: 0.8rem; color: var(--accent-cyan); font-family: monospace; margin-top: 0.15rem;">
+                ${o.badgeNumber} • <span style="color: var(--text-muted); font-family: monospace;">${o.email}</span>
+              </div>
+            </div>
           </div>
         </td>
-        <td>
-          <span class="badge" style="background: rgba(6,182,212,0.15); color: var(--accent-cyan); font-family: monospace; letter-spacing: 0.04em;">${o.badgeNumber}</span>
+        <td style="padding: 1.1rem 1.25rem;">
+          <div style="font-size: 0.9rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.25rem;">${o.department || 'Financial Fraud Cell'}</div>
+          <span class="badge ${o.role === 'ADMIN' ? 'badge-priority-HIGH' : 'badge-status-SUBMITTED'}" style="font-size: 0.72rem; letter-spacing: 0.04em;">${o.role}</span>
         </td>
-        <td style="font-family: monospace; font-size: 0.86rem; color: #e2e8f0;">${o.email}</td>
-        <td>
-          <div style="display: flex; align-items: center; gap: 0.4rem;">
-            <input type="password" readonly value="${pwd}" id="pwdInput_${o._id || o.officerId}" style="background: rgba(15,23,42,0.7); border: 1px solid var(--border-color); color: #f59e0b; font-family: monospace; font-size: 0.85rem; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); width: 110px; text-align: center;">
-            <button type="button" class="btn btn-sm btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.78rem;" onclick="toggleShowPassword('pwdInput_${o._id || o.officerId}')">👁️</button>
-          </div>
-        </td>
-        <td style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">${o.department || 'Financial Fraud Cell'}</td>
-        <td>
-          <span class="badge ${o.role === 'ADMIN' ? 'badge-priority-HIGH' : 'badge-status-SUBMITTED'}" style="font-size: 0.75rem; letter-spacing: 0.03em;">${o.role}</span>
-        </td>
-        <td style="padding-right: 1.25rem;">
-          <div style="display: flex; gap: 0.4rem;">
-            <button class="btn btn-sm btn-accent" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="openEditOfficerForm('${o._id || o.officerId}')">✏️ Edit</button>
-            ${isSelf ? '' : `<button class="btn btn-sm btn-danger" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="promptDeleteOfficer('${o._id || o.officerId}', '${o.name}')">🗑️ Delete</button>`}
+        <td style="padding: 1.1rem 1.25rem; text-align: right;">
+          <div style="display: flex; gap: 0.45rem; justify-content: flex-end;">
+            <button class="btn btn-sm btn-accent" style="padding: 0.45rem 0.85rem; font-size: 0.84rem; font-weight: 600;" onclick="openEditOfficerForm('${o._id || o.officerId}')">
+              ✏️ Edit
+            </button>
+            ${isSelf ? '' : `
+              <button class="btn btn-sm btn-danger" style="background: rgba(239, 68, 68, 0.18); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.45rem 0.85rem; font-size: 0.84rem; font-weight: 600;" onclick="promptDeleteOfficer('${o._id || o.officerId}', '${o.name}')">
+                🗑️ Delete
+              </button>
+            `}
           </div>
         </td>
       </tr>
