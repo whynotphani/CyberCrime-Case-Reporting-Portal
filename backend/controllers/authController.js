@@ -256,6 +256,7 @@ exports.officerLogin = async (req, res, next) => {
         id: officer._id,
         name: officer.name,
         badgeNumber: officer.badgeNumber,
+        email: officer.email,
         role: 'officer',
         officerRole: officer.role,
         department: officer.department
@@ -272,6 +273,7 @@ exports.officerLogin = async (req, res, next) => {
         officerId: officer.officerId,
         name: officer.name,
         badgeNumber: officer.badgeNumber,
+        email: officer.email,
         role: 'officer',
         officerRole: officer.role,
         department: officer.department

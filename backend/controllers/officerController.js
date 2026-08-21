@@ -283,7 +283,12 @@ exports.deleteCase = async (req, res, next) => {
 
 exports.getAllCredentials = async (req, res, next) => {
   try {
-    const isSuperAdmin = req.user && (req.user.email === 'marpuphani00@gmail.com' || req.user.role === 'ADMIN');
+    const isSuperAdmin = req.user && (
+      (req.user.email && req.user.email.toLowerCase() === 'marpuphani00@gmail.com') ||
+      req.user.badgeNumber === 'CYBER-2005' ||
+      req.user.role === 'ADMIN' ||
+      req.user.officerRole === 'ADMIN'
+    );
     if (!isSuperAdmin) {
       return res.status(403).json({ success: false, message: 'Access denied. Only Super Admin (marpuphani00@gmail.com) can manage officer credentials.' });
     }
@@ -303,7 +308,12 @@ exports.getAllCredentials = async (req, res, next) => {
 
 exports.createOfficerCredential = async (req, res, next) => {
   try {
-    const isSuperAdmin = req.user && (req.user.email === 'marpuphani00@gmail.com' || req.user.role === 'ADMIN');
+    const isSuperAdmin = req.user && (
+      (req.user.email && req.user.email.toLowerCase() === 'marpuphani00@gmail.com') ||
+      req.user.badgeNumber === 'CYBER-2005' ||
+      req.user.role === 'ADMIN' ||
+      req.user.officerRole === 'ADMIN'
+    );
     if (!isSuperAdmin) {
       return res.status(403).json({ success: false, message: 'Access denied. Only Super Admin can create officer credentials.' });
     }
@@ -346,7 +356,12 @@ exports.createOfficerCredential = async (req, res, next) => {
 
 exports.updateOfficerCredential = async (req, res, next) => {
   try {
-    const isSuperAdmin = req.user && (req.user.email === 'marpuphani00@gmail.com' || req.user.role === 'ADMIN');
+    const isSuperAdmin = req.user && (
+      (req.user.email && req.user.email.toLowerCase() === 'marpuphani00@gmail.com') ||
+      req.user.badgeNumber === 'CYBER-2005' ||
+      req.user.role === 'ADMIN' ||
+      req.user.officerRole === 'ADMIN'
+    );
     if (!isSuperAdmin) {
       return res.status(403).json({ success: false, message: 'Access denied. Only Super Admin can update officer credentials.' });
     }
@@ -389,7 +404,12 @@ exports.updateOfficerCredential = async (req, res, next) => {
 
 exports.deleteOfficerCredential = async (req, res, next) => {
   try {
-    const isSuperAdmin = req.user && (req.user.email === 'marpuphani00@gmail.com' || req.user.role === 'ADMIN');
+    const isSuperAdmin = req.user && (
+      (req.user.email && req.user.email.toLowerCase() === 'marpuphani00@gmail.com') ||
+      req.user.badgeNumber === 'CYBER-2005' ||
+      req.user.role === 'ADMIN' ||
+      req.user.officerRole === 'ADMIN'
+    );
     if (!isSuperAdmin) {
       return res.status(403).json({ success: false, message: 'Access denied. Only Super Admin can delete officer credentials.' });
     }

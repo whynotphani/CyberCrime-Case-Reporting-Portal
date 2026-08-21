@@ -95,7 +95,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (manageCredentialsNavBtn && manageCredentialsModal) {
     manageCredentialsNavBtn.addEventListener('click', () => {
-      if (currentUserEmail !== 'marpuphani00@gmail.com') {
+      const badgeText = document.getElementById('officerNameBadge') ? document.getElementById('officerNameBadge').innerText : '';
+      const isSuperAdminUser = currentUserEmail === 'marpuphani00@gmail.com' ||
+                               badgeText.includes('CYBER-2005') ||
+                               badgeText.includes('Phanindra');
+      if (!isSuperAdminUser) {
         showToast('Access restricted to Super Admin marpuphani00@gmail.com', 'error');
         return;
       }
@@ -150,12 +154,16 @@ async function loadOfficerProfile() {
     const res = await API.request('/api/auth/me');
     if (res.success && res.user.officer) {
       const off = res.user.officer;
-      currentUserEmail = off.email ? off.email.toLowerCase() : '';
+      currentUserEmail = (off.email || '').toLowerCase().trim();
       document.getElementById('officerNameBadge').innerText = `${off.name} (${off.badgeNumber})`;
+
+      const isSuperAdminUser = currentUserEmail === 'marpuphani00@gmail.com' ||
+                               off.badgeNumber === 'CYBER-2005' ||
+                               off.role === 'ADMIN';
 
       const manageNavBtn = document.getElementById('manageCredentialsNavBtn');
       if (manageNavBtn) {
-        if (currentUserEmail === 'marpuphani00@gmail.com') {
+        if (isSuperAdminUser) {
           manageNavBtn.style.display = 'inline-block';
         } else {
           manageNavBtn.style.display = 'none';
