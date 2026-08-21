@@ -247,3 +247,36 @@ exports.downloadOfficerEvidence = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.deleteCase = async (req, res, next) => {
+  try {
+    const caseNumber = req.params.caseNumber;
+    const isMongoConnected = mongoose.connection.readyState === 1;
+
+    if (isMongoConnected) {
+      const deletedCase = await Case.findOneAndDelete({ caseNumber });
+      if (!deletedCase) {
+        return res.status(404).json({ success: false, message: 'Case not found.' });
+      }
+
+      await Evidence.deleteMany({ caseNumber });
+      await CaseStatusHistory.deleteMany({ caseNumber });
+
+      return res.status(200).json({ success: true, message: `Case ${caseNumber} deleted successfully.` });
+    } else {
+      const caseIdx = store.cases.findIndex(c => c.caseNumber === caseNumber);
+      if (caseIdx === -1) {
+        return res.status(404).json({ success: false, message: 'Case not found.' });
+      }
+
+      store.cases.splice(caseIdx, 1);
+      store.evidence = store.evidence.filter(e => e.caseNumber !== caseNumber);
+      store.case_status_history = store.case_status_history.filter(h => h.caseNumber !== caseNumber);
+      store.otp_records = store.otp_records.filter(o => o.caseNumber !== caseNumber);
+
+      return res.status(200).json({ success: true, message: `Case ${caseNumber} deleted successfully.` });
+    }
+  } catch (error) {
+    next(error);
+  }
+};

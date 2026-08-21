@@ -42,6 +42,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (caseDetailModal) caseDetailModal.classList.remove('active');
   });
 
+  const deleteCaseBtn = document.getElementById('deleteCaseBtn');
+  if (deleteCaseBtn) {
+    deleteCaseBtn.addEventListener('click', handleDeleteCase);
+  }
+
   document.getElementById('updateStatusForm').addEventListener('submit', handleStatusUpdate);
   document.getElementById('assignOfficerForm').addEventListener('submit', handleAssignOfficer);
 });
@@ -334,4 +339,32 @@ function debounce(func, delay) {
     clearTimeout(timer);
     timer = setTimeout(() => func.apply(this, args), delay);
   };
+}
+
+async function promptDeleteCase(caseNumber) {
+  currentCaseNumber = caseNumber;
+  await handleDeleteCase();
+}
+
+async function handleDeleteCase() {
+  if (!currentCaseNumber) return;
+
+  const confirmed = confirm(`⚠️ Are you sure you want to permanently delete Case ${currentCaseNumber}? This action cannot be undone.`);
+  if (!confirmed) return;
+
+  try {
+    const res = await API.request(`/api/officer/cases/${currentCaseNumber}`, {
+      method: 'DELETE'
+    });
+
+    if (res.success) {
+      showToast(res.message || `Case ${currentCaseNumber} deleted successfully.`, 'success');
+      const caseDetailModal = document.getElementById('caseDetailModal');
+      if (caseDetailModal) caseDetailModal.classList.remove('active');
+      currentCaseNumber = null;
+      await fetchCases();
+    }
+  } catch (err) {
+    showToast(err.message || 'Failed to delete case.', 'error');
+  }
 }
