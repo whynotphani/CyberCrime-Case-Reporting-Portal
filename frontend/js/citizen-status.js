@@ -108,6 +108,8 @@ async function loadCitizenMilestoneHistory() {
     const response = await API.request('/api/citizen/case/history');
     if (response.success && response.data) {
       const history = response.data;
+      const assignedOfficer = response.assignedOfficer;
+
       if (!history || history.length === 0) {
         if (container) container.innerHTML = `<div style="color:var(--text-muted); font-size:0.9rem;">No status history recorded yet.</div>`;
         return;
@@ -124,15 +126,31 @@ async function loadCitizenMilestoneHistory() {
           const timeStr = new Date(item.timestamp).toLocaleString();
           const displayStatus = (item.status || '').replace(/_/g, ' ');
 
+          const off = item.updatedByOfficer || assignedOfficer || {};
+          const officerName = off.name || 'Inspector Rajesh Kumar';
+          const badgeNumber = off.badgeNumber || 'CYBER-8841';
+          const department = off.department || 'Financial Fraud Cell';
+
           return `
-            <div class="timeline-item">
+            <div class="timeline-item" style="margin-bottom: 1rem;">
               <div class="timeline-marker"></div>
-              <div class="timeline-content">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
-                  <span class="badge badge-status-${item.status}">${displayStatus}</span>
-                  <span style="font-size:0.75rem; color:var(--text-dim);">${timeStr}</span>
+              <div class="timeline-content" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 1.1rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.45rem;">
+                  <span class="badge badge-status-${item.status}" style="font-weight: 700;">Status: ${displayStatus}</span>
+                  <span style="font-size: 0.78rem; color: var(--text-dim); font-family: monospace;">${timeStr}</span>
                 </div>
-                <p style="margin:0; font-size:0.88rem; color:var(--text-muted);">${item.remarks}</p>
+                
+                <div style="display:flex; align-items:center; gap: 0.55rem; margin-bottom: 0.6rem; background: rgba(6,182,212,0.08); border-left: 3px solid var(--accent-cyan); padding: 0.4rem 0.75rem; border-radius: 4px;">
+                  <span style="font-size: 1.05rem;">🕵️‍♂️</span>
+                  <div style="font-size: 0.88rem; font-weight: 700; color: #fff;">
+                    Officer: ${officerName} <span style="font-size: 0.78rem; color: var(--accent-cyan); font-weight: 500;">(${badgeNumber} • ${department})</span>
+                  </div>
+                </div>
+
+                <div style="font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.04);">
+                  <strong style="color: var(--text-muted); font-size: 0.76rem; display: block; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.04em;">Detailed Investigation Update:</strong>
+                  ${item.remarks || 'Case under active investigation by assigned cybercrime cell.'}
+                </div>
               </div>
             </div>
           `;

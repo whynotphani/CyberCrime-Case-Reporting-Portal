@@ -328,24 +328,64 @@ exports.getCaseHistory = async (req, res, next) => {
     const isMongoConnected = mongoose.connection.readyState === 1;
 
     let rawHistory;
+    let caseObj = null;
+
     if (isMongoConnected) {
-      rawHistory = await CaseStatusHistory.find({ caseNumber }).sort({ timestamp: -1 });
+      caseObj = await Case.findOne({ caseNumber }).populate('assignedOfficer', 'name badgeNumber department');
+      rawHistory = await CaseStatusHistory.find({ caseNumber }).populate('updatedByOfficer', 'name badgeNumber department').sort({ timestamp: -1 });
     } else {
+      caseObj = store.cases.find(c => c.caseNumber === caseNumber);
       rawHistory = store.case_status_history.filter(h => h.caseNumber === caseNumber);
+      rawHistory.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    }
+
+    let defaultOfficer = null;
+    if (caseObj && caseObj.assignedOfficer) {
+      if (typeof caseObj.assignedOfficer === 'object') {
+        defaultOfficer = caseObj.assignedOfficer;
+      } else {
+        defaultOfficer = store.officers.find(o => o._id === caseObj.assignedOfficer || o.officerId === caseObj.assignedOfficer);
+      }
+    }
+
+    if (!defaultOfficer && store.officers && store.officers.length > 0) {
+      defaultOfficer = store.officers[0];
     }
 
     const publicHistory = rawHistory.map(item => {
+      let officerInfo = null;
+      if (item.updatedByOfficer) {
+        if (typeof item.updatedByOfficer === 'object') {
+          officerInfo = item.updatedByOfficer;
+        } else {
+          officerInfo = store.officers.find(o => o._id === item.updatedByOfficer || o.officerId === item.updatedByOfficer);
+        }
+      }
+
+      if (!officerInfo && defaultOfficer) {
+        officerInfo = defaultOfficer;
+      }
+
       return {
         _id: item._id,
         caseNumber: item.caseNumber,
         status: item.status,
         remarks: item.remarks || `Case status updated to ${item.status.replace(/_/g, ' ')}.`,
         updatedByRole: item.updatedByRole,
+        updatedByOfficer: officerInfo ? {
+          name: officerInfo.name,
+          badgeNumber: officerInfo.badgeNumber,
+          department: officerInfo.department || 'Financial Fraud Cell'
+        } : {
+          name: 'Inspector Rajesh Kumar',
+          badgeNumber: 'CYBER-8841',
+          department: 'Financial Fraud Cell'
+        },
         timestamp: item.timestamp
       };
     });
 
-    res.status(200).json({ success: true, data: publicHistory });
+    res.status(200).json({ success: true, data: publicHistory, assignedOfficer: defaultOfficer });
   } catch (error) {
     next(error);
   }
