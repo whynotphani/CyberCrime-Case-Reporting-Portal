@@ -137,14 +137,14 @@ function updateMetrics(cases) {
   const total = cases.length;
   const newCases = cases.filter(c => c.status === 'SUBMITTED' || c.status === 'VERIFICATION_PENDING').length;
   const highPriority = cases.filter(c => c.priority === 'HIGH').length;
-  const underReview = cases.filter(c => c.status === 'UNDER_INVESTIGATION' || c.status === 'ASSIGNED').length;
-  const resolvedClosed = cases.filter(c => c.status === 'RESOLVED' || c.status === 'CLOSED').length;
+  const activeCases = cases.filter(c => ['UNDER_INVESTIGATION', 'UNDER_REVIEW', 'SUBMITTED', 'ASSIGNED', 'VERIFICATION_PENDING', 'ADDITIONAL_INFO_REQUIRED'].includes(c.status)).length;
+  const resolvedClosed = cases.filter(c => ['RESOLVED', 'CLOSED'].includes(c.status)).length;
 
-  document.getElementById('metricTotal').innerText = total;
-  document.getElementById('metricNew').innerText = newCases;
-  document.getElementById('metricHighPriority').innerText = highPriority;
-  document.getElementById('metricUnderReview').innerText = underReview;
-  document.getElementById('metricResolvedClosed').innerText = resolvedClosed;
+  if (document.getElementById('metricTotal')) document.getElementById('metricTotal').innerText = total;
+  if (document.getElementById('metricNew')) document.getElementById('metricNew').innerText = newCases;
+  if (document.getElementById('metricHighPriority')) document.getElementById('metricHighPriority').innerText = highPriority;
+  if (document.getElementById('metricUnderReview')) document.getElementById('metricUnderReview').innerText = activeCases;
+  if (document.getElementById('metricResolvedClosed')) document.getElementById('metricResolvedClosed').innerText = resolvedClosed;
 }
 
 function renderCaseTable(cases) {
