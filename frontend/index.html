@@ -91,15 +91,15 @@
         </div>
       </div>
 
-      <!-- Card 3: Active Priority Investigations -->
+      <!-- Card 3: Cases Closed & Resolved -->
       <div class="glass-card"
         style="padding: 1.25rem 1rem; text-align: center; border-top: 3px solid #10b981; background: rgba(15, 23, 42, 0.75);">
-        <div id="statActiveInvestigations"
+        <div id="statCasesClosed"
           style="font-size: 1.75rem; color: #10b981; font-weight: 800; margin-bottom: 0.35rem; letter-spacing: -0.02em;">
-          19 Active
+          1 Closed
         </div>
         <div style="color: #94a3b8; font-size: 0.84rem; font-weight: 500; line-height: 1.35;">
-          Cases Under Priority Investigation
+          Total Cyber Cases Closed & Resolved
         </div>
       </div>
 
@@ -291,12 +291,12 @@
           const d = json.data;
           const fraudEl = document.getElementById('statFraudRecovered');
           const totalEl = document.getElementById('statTotalComplaints');
-          const activeEl = document.getElementById('statActiveInvestigations');
+          const closedEl = document.getElementById('statCasesClosed');
           const rateEl = document.getElementById('statResolutionRate');
 
           if (fraudEl) fraudEl.innerText = d.formattedLoss || '₹ 2.06 Cr+';
           if (totalEl) totalEl.innerText = `${d.totalCases || 20} Cases`;
-          if (activeEl) activeEl.innerText = `${d.activeCases || 19} Active`;
+          if (closedEl) closedEl.innerText = `${d.resolvedCases !== undefined ? d.resolvedCases : 1} Closed`;
           if (rateEl) rateEl.innerText = `${d.resolutionRate || '88.4%'} Rate`;
         }
       } catch (err) {
