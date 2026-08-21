@@ -29,8 +29,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  const caseDetailModal = document.getElementById('caseDetailModal');
+  if (caseDetailModal) {
+    caseDetailModal.addEventListener('click', (e) => {
+      if (e.target === caseDetailModal) {
+        caseDetailModal.classList.remove('active');
+      }
+    });
+  }
+
   document.getElementById('closeDetailModalBtn').addEventListener('click', () => {
-    document.getElementById('caseDetailModal').classList.remove('active');
+    if (caseDetailModal) caseDetailModal.classList.remove('active');
   });
 
   document.getElementById('updateStatusForm').addEventListener('submit', handleStatusUpdate);
@@ -239,7 +248,7 @@ async function openCaseModal(caseNumber) {
                 <div style="font-size:0.75rem; color:var(--text-dim);">${(f.fileSize/1024/1024).toFixed(2)} MB</div>
               </div>
             </div>
-            <a href="/api/officer/evidence/${f._id}/download" target="_blank" class="btn btn-sm btn-accent">
+            <a href="/api/officer/evidence/${f._id}/download?token=${encodeURIComponent(API.getToken() || '')}" target="_blank" class="btn btn-sm btn-accent">
               Inspect File
             </a>
           </div>
@@ -281,6 +290,7 @@ async function handleStatusUpdate(e) {
 
     if (res.success) {
       showToast('Case status updated successfully!', 'success');
+      document.getElementById('updateRemarksInput').value = '';
       document.getElementById('caseDetailModal').classList.remove('active');
       await fetchCases();
     }
@@ -309,6 +319,7 @@ async function handleAssignOfficer(e) {
 
     if (res.success) {
       showToast('Case assignment forwarded successfully!', 'success');
+      document.getElementById('assignRemarksInput').value = '';
       document.getElementById('caseDetailModal').classList.remove('active');
       await fetchCases();
     }

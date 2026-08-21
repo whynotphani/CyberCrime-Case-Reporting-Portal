@@ -35,7 +35,8 @@ exports.createCase = async (req, res, next) => {
       });
     }
 
-    const cleanPhone = phone ? phone.trim() : '';
+    const digitsOnly = phone ? phone.toString().replace(/\D/g, '') : '';
+    const cleanPhone = digitsOnly.length >= 10 ? digitsOnly.slice(-10) : digitsOnly;
     if (!cleanPhone || !/^[0-9]{10}$/.test(cleanPhone)) {
       return res.status(400).json({
         success: false,

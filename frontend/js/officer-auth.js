@@ -9,6 +9,27 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // Password visibility toggle
+  const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+  const passwordInput = document.getElementById('password');
+
+  if (togglePasswordBtn && passwordInput) {
+    togglePasswordBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.getAttribute('type') === 'password';
+      passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+      
+      const eyeOpen = togglePasswordBtn.querySelector('.eye-open');
+      const eyeClosed = togglePasswordBtn.querySelector('.eye-closed');
+
+      if (eyeOpen && eyeClosed) {
+        eyeOpen.style.display = isPassword ? 'none' : 'block';
+        eyeClosed.style.display = isPassword ? 'block' : 'none';
+      }
+
+      togglePasswordBtn.setAttribute('title', isPassword ? 'Hide Password' : 'Show Password');
+    });
+  }
+
   if (officerLoginForm) {
     officerLoginForm.addEventListener('submit', async (e) => {
       e.preventDefault();

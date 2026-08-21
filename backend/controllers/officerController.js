@@ -116,12 +116,13 @@ exports.updateCaseStatus = async (req, res, next) => {
 
       await caseDoc.save();
 
+      const validOfficerId = mongoose.Types.ObjectId.isValid(req.user.id) ? req.user.id : null;
       await CaseStatusHistory.create({
         caseNumber,
         status: caseDoc.status,
         remarks: remarks || `Status updated from ${oldStatus} to ${caseDoc.status} by Officer ${req.user.name}`,
         updatedByRole: 'OFFICER',
-        updatedByOfficer: req.user.id
+        updatedByOfficer: validOfficerId
       });
 
       return res.status(200).json({ success: true, message: `Case ${caseNumber} status updated to '${caseDoc.status}'.`, data: caseDoc });
@@ -168,12 +169,13 @@ exports.assignCase = async (req, res, next) => {
       if (caseDoc.status === 'VERIFICATION_PENDING' || caseDoc.status === 'SUBMITTED') caseDoc.status = 'ASSIGNED';
       await caseDoc.save();
 
+      const validOfficerId = mongoose.Types.ObjectId.isValid(req.user.id) ? req.user.id : null;
       await CaseStatusHistory.create({
         caseNumber,
         status: caseDoc.status,
         remarks: remarks || `Case assigned/forwarded to ${targetOfficer.name} (${targetOfficer.badgeNumber}).`,
         updatedByRole: 'OFFICER',
-        updatedByOfficer: req.user.id
+        updatedByOfficer: validOfficerId
       });
 
       return res.status(200).json({ success: true, message: `Case ${caseNumber} assigned to ${targetOfficer.name}.`, data: caseDoc });

@@ -61,7 +61,7 @@ async function loadCitizenCaseData() {
         const titleEl = document.getElementById('complaintTitle');
         if (titleEl) titleEl.value = caseData.title;
       }
-      if (caseData.incidentDate) {
+      if (caseData.incidentDate && !isNaN(new Date(caseData.incidentDate).getTime())) {
         document.getElementById('incidentDate').value = new Date(caseData.incidentDate).toISOString().slice(0, 16);
       }
       if (caseData.description) {
@@ -169,6 +169,8 @@ function removeStagedFile(idx) {
   handleFilesSelected(selectedFiles);
   if (selectedFiles.length === 0) {
     document.getElementById('uploadEvidenceBtn').disabled = true;
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) fileInput.value = '';
   }
 }
 
@@ -229,6 +231,8 @@ async function uploadStagedEvidence() {
       showToast('Evidence uploaded successfully!', 'success');
       selectedFiles = [];
       document.getElementById('stagedFilesList').innerHTML = '';
+      const fileInput = document.getElementById('fileInput');
+      if (fileInput) fileInput.value = '';
       uploadBtn.innerText = 'Upload Selected Evidence';
       await loadCitizenCaseData();
     }
@@ -260,7 +264,7 @@ function renderUploadedEvidence(files) {
             <div style="font-size:0.78rem; color:var(--text-dim);">${f.fileCategory} • ${sizeMb} MB • Uploaded ${dateStr}</div>
           </div>
         </div>
-        <a href="/api/citizen/case/evidence/${f._id}/download" target="_blank" class="btn btn-sm btn-secondary">
+        <a href="/api/citizen/case/evidence/${f._id}/download?token=${encodeURIComponent(API.getToken() || '')}" target="_blank" class="btn btn-sm btn-secondary">
           View / Download
         </a>
       </div>

@@ -73,9 +73,10 @@ async function seedOfficers() {
 
   if (mongoose.connection.readyState === 1) {
     for (const data of officersData) {
+      const { _id, ...mongoData } = data;
       await Officer.findOneAndUpdate(
         { officerId: data.officerId },
-        data,
+        mongoData,
         { upsert: true, new: true }
       );
     }

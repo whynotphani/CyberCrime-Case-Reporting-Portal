@@ -227,6 +227,55 @@
   border-top: 1px solid var(--border-color);
 }
 
+/* Password Input Wrapper & Toggle Eye Button */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-wrapper input {
+  padding-right: 2.75rem !important;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  user-select: none;
+  z-index: 5;
+  color: #38bdf8;
+  opacity: 0.85;
+}
+
+.password-toggle-btn:hover {
+  opacity: 1;
+  background: rgba(56, 189, 248, 0.12);
+  transform: scale(1.05);
+  color: #7dd3fc;
+}
+
+.eye-icon {
+  width: 17px;
+  height: 17px;
+  stroke: #38bdf8;
+  transition: stroke 0.2s ease, transform 0.2s ease;
+  display: block;
+}
+
+.password-toggle-btn:hover .eye-icon {
+  stroke: #7dd3fc;
+}
+
 /* Symmetrical Mobile Adjustments for Officer Dashboard */
 @media (max-width: 768px) {
   .desktop-table-container {

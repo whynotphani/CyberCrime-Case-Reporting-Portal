@@ -95,7 +95,7 @@ exports.verifyCitizenOtp = async (req, res, next) => {
         {
           caseNumber: caseDoc.caseNumber,
           caseId: caseDoc._id,
-          citizenId: caseDoc.citizen._id,
+          citizenId: caseDoc.citizen?._id || caseDoc.citizen,
           role: 'citizen'
         },
         JWT_SECRET,
@@ -216,15 +216,23 @@ exports.officerLogin = async (req, res, next) => {
     }
 
     const cleanId = identifier.trim().toLowerCase();
+    const searchBadge = identifier.trim().toUpperCase();
     const isMongoConnected = mongoose.connection.readyState === 1;
 
     let officer;
     if (isMongoConnected) {
       officer = await Officer.findOne({
-        $or: [{ badgeNumber: identifier.trim() }, { email: cleanId }]
+        $or: [
+          { badgeNumber: searchBadge },
+          { badgeNumber: identifier.trim() },
+          { email: cleanId }
+        ]
       });
     } else {
-      officer = store.officers.find(o => o.badgeNumber === identifier.trim() || o.email.toLowerCase() === cleanId);
+      officer = store.officers.find(o => 
+        (o.badgeNumber && o.badgeNumber.toUpperCase() === searchBadge) || 
+        (o.email && o.email.toLowerCase() === cleanId)
+      );
     }
 
     if (!officer) {
