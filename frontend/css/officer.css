@@ -84,38 +84,51 @@
 
 .table-responsive {
   width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
 }
 
 .data-table {
   width: 100%;
   border-collapse: collapse;
   text-align: center;
-  min-width: 950px;
+  table-layout: auto;
 }
 
 .data-table th {
-  padding: 1rem 0.85rem;
+  padding: 0.85rem 0.4rem;
   background: rgba(10, 16, 28, 0.9);
   color: var(--text-muted);
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.76rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   border-bottom: 1px solid var(--border-color);
   text-align: center;
-  white-space: nowrap;
+  word-wrap: break-word;
+  word-break: normal;
+  overflow-wrap: break-word;
+  white-space: normal;
   vertical-align: middle;
 }
 
 .data-table td {
-  padding: 1.1rem 0.85rem;
+  padding: 0.85rem 0.4rem;
   border-bottom: 1px solid var(--border-color);
-  font-size: 0.92rem;
+  font-size: 0.86rem;
   color: var(--text-main);
   text-align: center;
   vertical-align: middle;
+  word-wrap: break-word;
+  word-break: normal;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.data-table .btn {
+  white-space: nowrap !important;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+  display: inline-block;
 }
 
 .data-table tbody tr {
@@ -130,6 +143,8 @@
   font-family: monospace;
   font-weight: 700;
   color: var(--accent-cyan);
+  white-space: nowrap;
+  font-size: 0.82rem;
 }
 
 .modal-lg {
