@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('statusFilter').addEventListener('change', fetchCases);
   document.getElementById('searchInput').addEventListener('input', debounce(fetchCases, 300));
 
+  const sortFilter = document.getElementById('sortFilter');
+  if (sortFilter) {
+    sortFilter.addEventListener('change', applySortAndRender);
+  }
+
   const logoutOfficerBtn = document.getElementById('logoutOfficerBtn');
   if (logoutOfficerBtn) {
     logoutOfficerBtn.addEventListener('click', (e) => {
@@ -110,11 +115,51 @@ async function fetchCases() {
     if (res.success) {
       allCases = res.data;
       updateMetrics(allCases);
-      renderCaseTable(allCases);
+      applySortAndRender();
     }
   } catch (err) {
     showToast(err.message, 'error');
   }
+}
+
+function applySortAndRender() {
+  const sortSelect = document.getElementById('sortFilter');
+  const sortVal = sortSelect ? sortSelect.value : 'number_asc';
+  const sorted = sortCasesData(allCases, sortVal);
+  renderCaseTable(sorted);
+}
+
+function sortCasesData(cases, sortVal) {
+  const list = [...cases];
+
+  switch (sortVal) {
+    case 'number_asc':
+      list.sort((a, b) => a.caseNumber.localeCompare(b.caseNumber, undefined, { numeric: true, sensitivity: 'base' }));
+      break;
+    case 'number_desc':
+      list.sort((a, b) => b.caseNumber.localeCompare(a.caseNumber, undefined, { numeric: true, sensitivity: 'base' }));
+      break;
+    case 'loss_desc':
+      list.sort((a, b) => (Number(b.lossAmount) || 0) - (Number(a.lossAmount) || 0));
+      break;
+    case 'loss_asc':
+      list.sort((a, b) => (Number(a.lossAmount) || 0) - (Number(b.lossAmount) || 0));
+      break;
+    default:
+      list.sort((a, b) => a.caseNumber.localeCompare(b.caseNumber, undefined, { numeric: true }));
+  }
+  return list;
+}
+
+function toggleSort(type) {
+  const sortSelect = document.getElementById('sortFilter');
+  if (!sortSelect) return;
+  if (type === 'number') {
+    sortSelect.value = sortSelect.value === 'number_asc' ? 'number_desc' : 'number_asc';
+  } else if (type === 'loss') {
+    sortSelect.value = sortSelect.value === 'loss_desc' ? 'loss_asc' : 'loss_desc';
+  }
+  applySortAndRender();
 }
 
 async function fetchOfficersList() {

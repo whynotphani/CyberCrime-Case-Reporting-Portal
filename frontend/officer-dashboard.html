@@ -102,6 +102,13 @@
           <option value="RESOLVED">Resolved</option>
           <option value="CLOSED">Closed</option>
         </select>
+
+        <select id="sortFilter" class="form-control" style="width: 210px;">
+          <option value="number_asc">Sort: Case Number (A → Z)</option>
+          <option value="number_desc">Sort: Case Number (Z → A)</option>
+          <option value="loss_desc">Sort: Financial Loss (High → Low)</option>
+          <option value="loss_asc">Sort: Financial Loss (Low → High)</option>
+        </select>
       </div>
 
     </div>
@@ -112,12 +119,12 @@
         <table class="data-table">
           <thead>
             <tr>
-              <th>Case Registration Number</th>
+              <th onclick="toggleSort('number')" style="cursor: pointer; user-select: none;" title="Click to sort by Case Registration Number">Case Registration Number ↕</th>
               <th>Crime Category</th>
               <th>Severity</th>
               <th>Submission Date</th>
               <th>Current Status</th>
-              <th>Financial Loss</th>
+              <th onclick="toggleSort('loss')" style="cursor: pointer; user-select: none;" title="Click to sort by Financial Loss">Financial Loss ↕</th>
               <th>Assigned Expert</th>
               <th>Action</th>
             </tr>
@@ -319,6 +326,6 @@
 
   <script src="js/api.js"></script>
   <script src="js/mobile-nav.js"></script>
-  <script src="js/officer-dashboard.js?v=2.1"></script>
+  <script src="js/officer-dashboard.js?v=2.2"></script>
 </body>
 </html>
