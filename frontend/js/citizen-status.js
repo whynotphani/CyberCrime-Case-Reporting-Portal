@@ -23,6 +23,7 @@ async function loadCitizenStatusData() {
       const suspect = c.suspectDetails || {};
 
       document.getElementById('statusCaseNumber').innerText = c.caseNumber || '-';
+      if (document.getElementById('headerCaseNumber')) document.getElementById('headerCaseNumber').innerText = c.caseNumber || '-';
       document.getElementById('statusCitizenName').innerText = citizen.fullName || 'Citizen';
       document.getElementById('statusCitizenPhone').innerText = citizen.phone || '-';
       document.getElementById('statusCategory').innerText = c.category || 'Other Cybercrime';
