@@ -369,7 +369,8 @@ async function handleStatusUpdate(e) {
     if (res.success) {
       showToast('Case status updated successfully!', 'success');
       document.getElementById('updateRemarksInput').value = '';
-      document.getElementById('caseDetailModal').classList.remove('active');
+      // Stay on same page (keep modal open) and refresh live modal data
+      await openCaseModal(currentCaseNumber);
       await fetchCases();
     }
   } catch (err) {
@@ -398,7 +399,8 @@ async function handleAssignOfficer(e) {
     if (res.success) {
       showToast('Case assignment forwarded successfully!', 'success');
       document.getElementById('assignRemarksInput').value = '';
-      document.getElementById('caseDetailModal').classList.remove('active');
+      // Stay on same page (keep modal open) and refresh live modal data
+      await openCaseModal(currentCaseNumber);
       await fetchCases();
     }
   } catch (err) {
