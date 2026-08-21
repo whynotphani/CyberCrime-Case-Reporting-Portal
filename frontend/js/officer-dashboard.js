@@ -104,17 +104,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
       manageCredentialsModal.classList.add('active');
+      if (document.getElementById('officerPortalNavBtn')) document.getElementById('officerPortalNavBtn').classList.remove('active');
+      if (manageCredentialsNavBtn) manageCredentialsNavBtn.classList.add('active');
       fetchOfficerCredentials();
     });
   }
 
+  function closeManageOfficersModal() {
+    if (manageCredentialsModal) manageCredentialsModal.classList.remove('active');
+    if (document.getElementById('officerPortalNavBtn')) document.getElementById('officerPortalNavBtn').classList.add('active');
+    if (manageCredentialsNavBtn) manageCredentialsNavBtn.classList.remove('active');
+  }
+
   if (closeCredentialsModalBtn && manageCredentialsModal) {
-    closeCredentialsModalBtn.addEventListener('click', () => manageCredentialsModal.classList.remove('active'));
+    closeCredentialsModalBtn.addEventListener('click', closeManageOfficersModal);
   }
 
   if (manageCredentialsModal) {
     manageCredentialsModal.addEventListener('click', (e) => {
-      if (e.target === manageCredentialsModal) manageCredentialsModal.classList.remove('active');
+      if (e.target === manageCredentialsModal) closeManageOfficersModal();
     });
   }
 

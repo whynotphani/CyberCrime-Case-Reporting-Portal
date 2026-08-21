@@ -17,8 +17,8 @@
     </a>
     <ul class="nav-links">
       <li><a href="index.html" class="nav-link">🏠 Home</a></li>
-      <li><a href="officer-dashboard.html" class="nav-link active">🕵️ Officer Portal</a></li>
-      <li><button id="manageCredentialsNavBtn" class="nav-link active" style="display: none; border: none; font-family: inherit; cursor: pointer;">👥 Manage Officers</button></li>
+      <li><a href="officer-dashboard.html" id="officerPortalNavBtn" class="nav-link active">🕵️ Officer Portal</a></li>
+      <li><button id="manageCredentialsNavBtn" class="nav-link" style="display: none; border: none; font-family: inherit; cursor: pointer; background: transparent;">👥 Manage Officers</button></li>
       <li><span class="officer-badge-pill" id="officerNameBadge">Officer Logged In</span></li>
       <li><button id="logoutOfficerBtn" class="btn btn-sm btn-secondary">Logout</button></li>
     </ul>
@@ -327,7 +327,7 @@
 
   <!-- Manage Officers Pop-up Portal (Restricted to marpuphani00@gmail.com) -->
   <div id="manageCredentialsModal" class="modal-overlay">
-    <div class="modal-card modal-lg" style="max-width: 960px; max-height: 90vh; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
+    <div class="modal-card modal-lg" style="max-width: 960px; max-height: 90vh; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; background: rgba(11, 15, 25, 0.95); backdrop-filter: var(--backdrop-blur); border: var(--glass-border); box-shadow: var(--shadow-glow);">
       <style>
         #manageCredentialsModal .modal-card::-webkit-scrollbar { display: none; }
         #manageCredentialsModal .data-table th {
@@ -483,6 +483,6 @@
 
   <script src="js/api.js"></script>
   <script src="js/mobile-nav.js"></script>
-  <script src="js/officer-dashboard.js?v=3.7"></script>
+  <script src="js/officer-dashboard.js?v=3.8"></script>
 </body>
 </html>
