@@ -239,6 +239,18 @@ a:hover {
   background: linear-gradient(135deg, #a78bfa, #8b5cf6);
 }
 
+.btn-amber {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
+}
+
+.btn-amber:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
 .btn-danger {
   background: linear-gradient(135deg, var(--accent-red), #dc2626);
   color: #fff;
@@ -503,7 +515,7 @@ select.form-control option {
 
 .home-step-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   text-align: left;
   margin-bottom: 3rem;
@@ -511,7 +523,7 @@ select.form-control option {
 
 .home-metrics-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
   margin-bottom: 3rem;
 }

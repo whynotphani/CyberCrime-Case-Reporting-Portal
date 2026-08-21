@@ -22,7 +22,6 @@
       <li><a href="helpline-desk.html" class="nav-link">📞 Helpline Desk (1930)</a></li>
       <li><a href="citizen-login.html" class="nav-link">🔑 Citizen Portal</a></li>
       <li><a href="citizen-status.html" class="nav-link">🔍 Track Case Status</a></li>
-      <li><a href="officer-login.html" class="nav-link">🕵️ Officer Portal</a></li>
     </ul>
   </nav>
 
@@ -41,110 +40,86 @@
       </p>
 
       <!-- Quick Action Navigation Hub -->
-      <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
-        <a href="helpline-desk.html" class="btn btn-accent" style="padding: 0.85rem 1.5rem; font-size: 0.95rem;">
+      <div style="display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: center;">
+        <a href="helpline-desk.html" class="btn btn-amber" style="padding: 0.85rem 1.65rem; font-size: 0.98rem;">
           📞 1930 Helpline Triage
         </a>
-        <a href="citizen-login.html" class="btn btn-primary" style="padding: 0.85rem 1.5rem; font-size: 0.95rem;">
+        <a href="citizen-login.html" class="btn btn-accent" style="padding: 0.85rem 1.65rem; font-size: 0.98rem;">
           🔑 Citizen Portal
         </a>
-        <a href="citizen-status.html" class="btn btn-purple" style="padding: 0.85rem 1.5rem; font-size: 0.95rem;">
+        <a href="citizen-status.html" class="btn btn-purple" style="padding: 0.85rem 1.65rem; font-size: 0.98rem;">
           🔍 Track Case Status
-        </a>
-        <a href="officer-login.html" class="btn btn-emerald" style="padding: 0.85rem 1.5rem; font-size: 0.95rem;">
-          🕵️ Officer Portal
         </a>
       </div>
     </div>
 
     <!-- Live System Metrics Bar -->
     <div class="home-metrics-grid">
-      <div class="glass-card" style="padding: 1.15rem; text-align: center;">
-        <div style="font-size: 1.6rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.25rem;">24 / 7</div>
+      <div class="glass-card" style="padding: 1.15rem; text-align: center; border-top: 3px solid #f59e0b;">
+        <div style="font-size: 1.6rem; color: #f59e0b; font-weight: 800; margin-bottom: 0.25rem;">24 / 7</div>
         <div style="font-size: 0.82rem; color: var(--text-muted);">Helpline Triage Desk</div>
       </div>
-      <div class="glass-card" style="padding: 1.15rem; text-align: center;">
-        <div style="font-size: 1.6rem; color: var(--accent-gold); font-weight: 800; margin-bottom: 0.25rem;">10 Min</div>
+      <div class="glass-card" style="padding: 1.15rem; text-align: center; border-top: 3px solid var(--accent-cyan);">
+        <div style="font-size: 1.6rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.25rem;">10 Min</div>
         <div style="font-size: 0.82rem; color: var(--text-muted);">Auto-Expiring OTP Code</div>
       </div>
-      <div class="glass-card" style="padding: 1.15rem; text-align: center;">
-        <div style="font-size: 1.6rem; color: var(--accent-emerald); font-weight: 800; margin-bottom: 0.25rem;">100% Digital</div>
-        <div style="font-size: 0.82rem; color: var(--text-muted);">Evidence Storage Vault</div>
-      </div>
-      <div class="glass-card" style="padding: 1.15rem; text-align: center;">
-        <div style="font-size: 1.6rem; color: var(--primary); font-weight: 800; margin-bottom: 0.25rem;">Real-Time</div>
-        <div style="font-size: 0.82rem; color: var(--text-muted);">Officer Status Trail</div>
+      <div class="glass-card" style="padding: 1.15rem; text-align: center; border-top: 3px solid #a855f7;">
+        <div style="font-size: 1.6rem; color: #c084fc; font-weight: 800; margin-bottom: 0.25rem;">100% Digital</div>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Evidence Storage & Status Trail</div>
       </div>
     </div>
 
-    <!-- Organized 4-Column Action Cards Grid -->
+    <!-- Organized 3-Column Action Cards Grid -->
     <div class="home-step-grid">
 
-      <!-- Step 1 Card -->
-      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <!-- Step 1 Card: Helpline Triage -->
+      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #f59e0b;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="badge badge-priority-HIGH">Step 1</span>
+            <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3);">Stage 1</span>
             <span style="font-size: 1.8rem;">🎧</span>
           </div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 0.6rem; color: #fff;">1930 Helpline Triage</h3>
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem; color: #fff;">1930 Helpline Triage</h3>
           <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem; line-height: 1.6;">
             Victim reports cyber incident to Helpline 1930. The operator registers initial details and generates a 6-digit verification OTP code.
           </p>
         </div>
-        <a href="helpline-desk.html" class="btn btn-accent btn-full">
+        <a href="helpline-desk.html" class="btn btn-amber btn-full">
           Open Helpline Desk →
         </a>
       </div>
 
-      <!-- Step 2 Card -->
-      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <!-- Step 2 Card: Citizen OTP Access -->
+      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid var(--accent-cyan);">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="badge badge-status-SUBMITTED">Step 2</span>
+            <span class="badge" style="background: rgba(6, 182, 212, 0.15); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.3);">Stage 2</span>
             <span style="font-size: 1.8rem;">🔐</span>
           </div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 0.6rem; color: #fff;">Citizen OTP Access</h3>
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem; color: #fff;">Citizen OTP Access</h3>
           <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem; line-height: 1.6;">
             Enter Case Registration Number & 6-digit OTP code to verify your session and access the complaint filing portal securely.
           </p>
         </div>
-        <a href="citizen-login.html" class="btn btn-primary btn-full">
+        <a href="citizen-login.html" class="btn btn-accent btn-full">
           Log In via OTP →
         </a>
       </div>
 
-      <!-- Step 3 Card -->
-      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <!-- Step 3 Card: Evidence & Case Status Tracking -->
+      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #a855f7;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="badge badge-priority-MEDIUM">Step 3</span>
+            <span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3);">Stage 3</span>
             <span style="font-size: 1.8rem;">📂</span>
           </div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 0.6rem; color: #fff;">Evidence & Tracking</h3>
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem; color: #fff;">Evidence & Case Tracking</h3>
           <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem; line-height: 1.6;">
             Fill detailed complaint form, upload bank statements, chat logs, screenshots, or video proof, and track timeline status.
           </p>
         </div>
-        <a href="citizen-portal.html" class="btn btn-emerald btn-full">
-          Go to Citizen Portal →
-        </a>
-      </div>
-
-      <!-- Step 4 Card -->
-      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="badge badge-priority-HIGH">Step 4</span>
-            <span style="font-size: 1.8rem;">🕵️‍♂️</span>
-          </div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 0.6rem; color: #fff;">Officer Review Desk</h3>
-          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem; line-height: 1.6;">
-            Investigating officers inspect uploaded digital evidence, update priority severity, assign experts, and post remarks.
-          </p>
-        </div>
-        <a href="officer-login.html" class="btn btn-purple btn-full">
-          Officer Login →
+        <a href="citizen-status.html" class="btn btn-purple btn-full">
+          Track Case Status →
         </a>
       </div>
 
