@@ -91,12 +91,12 @@
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
-  min-width: 900px;
+  text-align: center;
+  min-width: 950px;
 }
 
 .data-table th {
-  padding: 1rem 1.25rem;
+  padding: 1rem 0.85rem;
   background: rgba(10, 16, 28, 0.9);
   color: var(--text-muted);
   font-size: 0.82rem;
@@ -104,13 +104,17 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-bottom: 1px solid var(--border-color);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .data-table td {
-  padding: 1.1rem 1.25rem;
+  padding: 1.1rem 0.85rem;
   border-bottom: 1px solid var(--border-color);
   font-size: 0.92rem;
   color: var(--text-main);
+  text-align: center;
   vertical-align: middle;
 }
 

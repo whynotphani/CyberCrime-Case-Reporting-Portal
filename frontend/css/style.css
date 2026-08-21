@@ -365,13 +365,16 @@ select.form-control option {
 .badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
-  padding: 0.3rem 0.75rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 50px;
   font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .badge-priority-HIGH {
