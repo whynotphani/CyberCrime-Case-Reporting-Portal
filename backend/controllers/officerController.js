@@ -146,6 +146,8 @@ exports.updateCaseStatus = async (req, res, next) => {
         timestamp: new Date()
       });
 
+      saveStore();
+
       return res.status(200).json({ success: true, message: `Case ${caseNumber} status updated to '${caseDoc.status}'.`, data: caseDoc });
     }
   } catch (error) {
@@ -200,6 +202,8 @@ exports.assignCase = async (req, res, next) => {
         updatedByOfficer: req.user.id,
         timestamp: new Date()
       });
+
+      saveStore();
 
       return res.status(200).json({ success: true, message: `Case ${caseNumber} assigned to ${targetOfficer.name}.`, data: caseDoc });
     }

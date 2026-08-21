@@ -210,10 +210,16 @@ async function fetchCases() {
   if (search) queryParams.append('search', search);
 
   try {
+    // 1. Fetch all cases globally without filters to calculate exact dashboard metric cards
+    const rawAllRes = await API.request('/api/officer/cases');
+    if (rawAllRes.success && rawAllRes.data) {
+      updateMetrics(rawAllRes.data);
+    }
+
+    // 2. Fetch filtered cases to populate data table & mobile list
     const res = await API.request(`/api/officer/cases?${queryParams.toString()}`);
     if (res.success) {
       allCases = res.data;
-      updateMetrics(allCases);
       applySortAndRender();
     }
   } catch (err) {

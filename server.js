@@ -88,10 +88,10 @@ app.get('/api/public/stats', async (req, res) => {
     return res.status(200).json({
       success: true,
       data: {
-        totalCases: totalCases || 386,
-        activeCases: activeCases || 268,
-        resolvedCases: resolvedCases || 118,
-        totalLoss: totalLoss || 42000000,
+        totalCases: typeof totalCases === 'number' ? totalCases : 386,
+        activeCases: typeof activeCases === 'number' ? activeCases : 268,
+        resolvedCases: typeof resolvedCases === 'number' ? resolvedCases : 118,
+        totalLoss: typeof totalLoss === 'number' ? totalLoss : 42000000,
         formattedLoss,
         resolutionRate: '88.4%'
       }
