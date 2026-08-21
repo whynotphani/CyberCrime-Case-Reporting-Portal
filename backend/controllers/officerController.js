@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
 const Case = require('../models/Case');
 const Evidence = require('../models/Evidence');
 const CaseStatusHistory = require('../models/CaseStatusHistory');

@@ -416,9 +416,14 @@
             </div>
           </div>
 
-          <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1rem;">
-            <button type="button" id="cancelOfficerFormBtn" class="btn btn-sm btn-secondary">Cancel</button>
-            <button type="submit" class="btn btn-sm btn-primary">Save Officer Credential</button>
+          <div style="display: flex; gap: 0.75rem; justify-content: space-between; align-items: center; margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem;">
+            <button type="button" id="deleteOfficerFromFormBtn" class="btn btn-sm btn-danger" style="display: none; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; font-weight: 600;">
+              🗑️ Delete Officer Credential
+            </button>
+            <div style="display: flex; gap: 0.75rem; margin-left: auto;">
+              <button type="button" id="cancelOfficerFormBtn" class="btn btn-sm btn-secondary">Cancel</button>
+              <button type="submit" class="btn btn-sm btn-primary">Save Officer Credential</button>
+            </div>
           </div>
         </form>
       </div>
@@ -444,6 +449,6 @@
 
   <script src="js/api.js"></script>
   <script src="js/mobile-nav.js"></script>
-  <script src="js/officer-dashboard.js?v=3.4"></script>
+  <script src="js/officer-dashboard.js?v=3.5"></script>
 </body>
 </html>

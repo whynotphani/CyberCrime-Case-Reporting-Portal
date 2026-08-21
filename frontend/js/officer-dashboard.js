@@ -124,6 +124,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('officerFormTitle').innerText = 'Add New Officer Credential';
       document.getElementById('passReqLabel').innerText = '*';
       document.getElementById('offPasswordInput').required = true;
+      if (document.getElementById('deleteOfficerFromFormBtn')) {
+        document.getElementById('deleteOfficerFromFormBtn').style.display = 'none';
+      }
       document.getElementById('officerFormContainer').style.display = 'block';
     });
   }
@@ -132,6 +135,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     cancelOfficerFormBtn.addEventListener('click', () => {
       document.getElementById('officerFormContainer').style.display = 'none';
       resetOfficerForm();
+    });
+  }
+
+  const deleteOfficerFromFormBtn = document.getElementById('deleteOfficerFromFormBtn');
+  if (deleteOfficerFromFormBtn) {
+    deleteOfficerFromFormBtn.addEventListener('click', () => {
+      const editId = document.getElementById('editOfficerId').value;
+      const editName = document.getElementById('offNameInput').value;
+      if (editId) {
+        promptDeleteOfficer(editId, editName);
+      }
     });
   }
 
@@ -571,8 +585,6 @@ function renderCredentialsTable(list) {
   }
 
   tbody.innerHTML = filtered.map(o => {
-    const isSelf = o.email && o.email.toLowerCase() === 'marpuphani00@gmail.com';
-
     return `
       <tr>
         <td style="padding: 1.1rem 1.25rem;">
@@ -591,16 +603,9 @@ function renderCredentialsTable(list) {
           <span class="badge ${o.role === 'ADMIN' ? 'badge-priority-HIGH' : 'badge-status-SUBMITTED'}" style="font-size: 0.72rem; letter-spacing: 0.04em;">${o.role}</span>
         </td>
         <td style="padding: 1.1rem 1.25rem; text-align: right;">
-          <div style="display: flex; gap: 0.45rem; justify-content: flex-end;">
-            <button class="btn btn-sm btn-accent" style="padding: 0.45rem 0.85rem; font-size: 0.84rem; font-weight: 600;" onclick="openEditOfficerForm('${o._id || o.officerId}')">
-              ✏️ Edit
-            </button>
-            ${isSelf ? '' : `
-              <button class="btn btn-sm btn-danger" style="background: rgba(239, 68, 68, 0.18); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.45rem 0.85rem; font-size: 0.84rem; font-weight: 600;" onclick="promptDeleteOfficer('${o._id || o.officerId}', '${o.name}')">
-                🗑️ Delete
-              </button>
-            `}
-          </div>
+          <button class="btn btn-sm btn-accent" style="padding: 0.45rem 0.95rem; font-size: 0.84rem; font-weight: 600;" onclick="openEditOfficerForm('${o._id || o.officerId}')">
+            ✏️ Edit
+          </button>
         </td>
       </tr>
     `;
@@ -627,17 +632,22 @@ function resetOfficerForm() {
     document.getElementById('offDeptSelect').value = 'Financial Fraud Cell';
   }
   document.getElementById('offRoleSelect').value = 'INVESTIGATING_OFFICER';
+  if (document.getElementById('deleteOfficerFromFormBtn')) {
+    document.getElementById('deleteOfficerFromFormBtn').style.display = 'none';
+  }
 }
 
 function openEditOfficerForm(id) {
   const off = allCredentialsList.find(o => o._id === id || o.officerId === id);
   if (!off) return;
 
+  const isSelf = off.email && off.email.toLowerCase() === 'marpuphani00@gmail.com';
+
   document.getElementById('editOfficerId').value = off._id || off.officerId;
   document.getElementById('offNameInput').value = off.name || '';
   document.getElementById('offBadgeInput').value = off.badgeNumber || '';
   document.getElementById('offEmailInput').value = off.email || '';
-  document.getElementById('offPasswordInput').value = off.plainPassword || (off.email === 'marpuphani00@gmail.com' ? 'phani@2005' : 'password123');
+  document.getElementById('offPasswordInput').value = off.plainPassword || (isSelf ? 'phani@2005' : 'password123');
 
   if (document.getElementById('offDeptSelect')) {
     document.getElementById('offDeptSelect').value = off.department || 'Financial Fraud Cell';
@@ -648,6 +658,15 @@ function openEditOfficerForm(id) {
   document.getElementById('officerFormTitle').innerText = `Edit Credential for ${off.name}`;
   document.getElementById('passReqLabel').innerText = '(Optional - Edit or keep current password)';
   document.getElementById('offPasswordInput').required = false;
+
+  const deleteBtn = document.getElementById('deleteOfficerFromFormBtn');
+  if (deleteBtn) {
+    if (isSelf) {
+      deleteBtn.style.display = 'none';
+    } else {
+      deleteBtn.style.display = 'inline-block';
+    }
+  }
 
   document.getElementById('officerFormContainer').style.display = 'block';
 }
@@ -706,6 +725,8 @@ async function promptDeleteOfficer(id, name) {
 
     if (res.success) {
       showToast(res.message || `Officer ${name} deleted successfully.`, 'success');
+      document.getElementById('officerFormContainer').style.display = 'none';
+      resetOfficerForm();
       await fetchOfficerCredentials();
       await fetchOfficersList();
     }
