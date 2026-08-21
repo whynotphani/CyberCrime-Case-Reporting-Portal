@@ -73,6 +73,18 @@ async function seedOfficers() {
       role: 'INVESTIGATING_OFFICER',
       department: 'Online Harassment & Social Media Cell',
       createdAt: new Date()
+    },
+    {
+      _id: 'off_105',
+      officerId: 'OFF-105',
+      name: 'Major Ramanayya',
+      badgeNumber: 'CYBER-5001',
+      email: 'ramanayya@cyber.gov.in',
+      passwordHash: defaultPasswordHash,
+      plainPassword: 'password123',
+      role: 'INVESTIGATING_OFFICER',
+      department: 'Online Harassment & Social Media Cell',
+      createdAt: new Date()
     }
   ];
 
