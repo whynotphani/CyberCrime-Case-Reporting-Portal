@@ -18,6 +18,7 @@
     <ul class="nav-links">
       <li><a href="index.html" class="nav-link">🏠 Home</a></li>
       <li><a href="officer-dashboard.html" class="nav-link active">🕵️ Officer Portal</a></li>
+      <li><button id="manageCredentialsNavBtn" class="btn btn-sm btn-accent" style="display: none; background: rgba(139, 92, 246, 0.25); border: 1px solid rgba(139, 92, 246, 0.5); color: #c084fc; font-weight: 600; padding: 0.4rem 0.85rem; margin-right: 0.5rem;">🔐 Manage Credentials</button></li>
       <li><span class="officer-badge-pill" id="officerNameBadge">Officer Logged In</span></li>
       <li><button id="logoutOfficerBtn" class="btn btn-sm btn-secondary">Logout</button></li>
     </ul>
@@ -324,8 +325,99 @@
     </div>
   </div>
 
+  <!-- Manage Credentials Pop-up Portal (Restricted to marpuphani00@gmail.com) -->
+  <div id="manageCredentialsModal" class="modal-overlay">
+    <div class="modal-card modal-lg" style="max-width: 920px; max-height: 90vh; overflow-y: auto;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+        <div>
+          <span style="font-size: 0.8rem; color: #c084fc; font-weight: 700; letter-spacing: 0.05em;">SUPER ADMIN CREDENTIAL PORTAL</span>
+          <h3 style="font-size: 1.4rem; color: #fff; margin: 0;">🔐 Manage Officer Credentials</h3>
+        </div>
+        <button id="closeCredentialsModalBtn" class="btn btn-sm btn-secondary">✕ Close</button>
+      </div>
+
+      <!-- Action Top Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+        <input type="text" id="credentialSearchInput" class="form-control" placeholder="Search officer by name, badge, email..." style="max-width: 320px;">
+        <button id="addNewOfficerBtn" class="btn btn-sm btn-accent" style="background: var(--primary); font-weight: 600;">
+          ➕ Add New Officer
+        </button>
+      </div>
+
+      <!-- Add / Edit Officer Form Box (Toggled) -->
+      <div id="officerFormContainer" style="display: none; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--primary); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.25rem;">
+        <h4 id="officerFormTitle" style="font-size: 1.05rem; margin-bottom: 1rem; color: var(--accent-cyan);">Add New Officer Credential</h4>
+        
+        <form id="officerCredentialForm">
+          <input type="hidden" id="editOfficerId">
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+            <div class="form-group">
+              <label for="offNameInput">Full Name *</label>
+              <input type="text" id="offNameInput" class="form-control" required placeholder="e.g. Inspector Ramesh Rao">
+            </div>
+
+            <div class="form-group">
+              <label for="offBadgeInput">Badge Number *</label>
+              <input type="text" id="offBadgeInput" class="form-control" required placeholder="e.g. CYBER-7721">
+            </div>
+
+            <div class="form-group">
+              <label for="offEmailInput">Login Email *</label>
+              <input type="email" id="offEmailInput" class="form-control" required placeholder="e.g. ramesh.rao@cyber.gov.in">
+            </div>
+
+            <div class="form-group">
+              <label for="offPasswordInput">Password <span id="passReqLabel">*</span></label>
+              <input type="password" id="offPasswordInput" class="form-control" placeholder="Min 6 characters...">
+            </div>
+
+            <div class="form-group">
+              <label for="offDeptInput">Department</label>
+              <input type="text" id="offDeptInput" class="form-control" placeholder="e.g. Financial Fraud Cell">
+            </div>
+
+            <div class="form-group">
+              <label for="offRoleSelect">Portal Role</label>
+              <select id="offRoleSelect" class="form-control">
+                <option value="INVESTIGATING_OFFICER">INVESTIGATING_OFFICER</option>
+                <option value="ADMIN">ADMIN</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1rem;">
+            <button type="button" id="cancelOfficerFormBtn" class="btn btn-sm btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-sm btn-primary">Save Officer Credential</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Officers Table -->
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Officer Name</th>
+              <th>Badge No.</th>
+              <th>Login Email</th>
+              <th>Department</th>
+              <th>Role</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="credentialsTableBody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
   <script src="js/api.js"></script>
   <script src="js/mobile-nav.js"></script>
-  <script src="js/officer-dashboard.js?v=2.2"></script>
+  <script src="js/officer-dashboard.js?v=3.0"></script>
 </body>
 </html>

@@ -21,4 +21,10 @@ router.route('/cases/:caseNumber/assign')
 
 router.get('/evidence/:id/download', officerController.downloadOfficerEvidence);
 
+// Super Admin Credential Management Endpoints
+router.get('/credentials', officerController.getAllCredentials);
+router.post('/credentials', officerController.createOfficerCredential);
+router.put('/credentials/:id', officerController.updateOfficerCredential);
+router.delete('/credentials/:id', officerController.deleteOfficerCredential);
+
 module.exports = router;

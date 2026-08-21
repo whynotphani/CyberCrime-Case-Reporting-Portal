@@ -280,3 +280,144 @@ exports.deleteCase = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getAllCredentials = async (req, res, next) => {
+  try {
+    const isSuperAdmin = req.user && (req.user.email === 'marpuphani00@gmail.com' || req.user.role === 'ADMIN');
+    if (!isSuperAdmin) {
+      return res.status(403).json({ success: false, message: 'Access denied. Only Super Admin (marpuphani00@gmail.com) can manage officer credentials.' });
+    }
+
+    const isMongoConnected = mongoose.connection.readyState === 1;
+    let officers;
+    if (isMongoConnected) {
+      officers = await Officer.find({}, 'name badgeNumber role department email officerId createdAt');
+    } else {
+      officers = store.officers.map(o => ({ _id: o._id, officerId: o.officerId, name: o.name, badgeNumber: o.badgeNumber, role: o.role, department: o.department, email: o.email, createdAt: o.createdAt }));
+    }
+    return res.status(200).json({ success: true, data: officers });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.createOfficerCredential = async (req, res, next) => {
+  try {
+    const isSuperAdmin = req.user && (req.user.email === 'marpuphani00@gmail.com' || req.user.role === 'ADMIN');
+    if (!isSuperAdmin) {
+      return res.status(403).json({ success: false, message: 'Access denied. Only Super Admin can create officer credentials.' });
+    }
+
+    const { name, badgeNumber, email, password, department, role } = req.body;
+    if (!name || !badgeNumber || !email || !password) {
+      return res.status(400).json({ success: false, message: 'Please provide name, badge number, email, and password.' });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const officerId = `OFF-${Math.floor(100 + Math.random() * 900)}`;
+    const newOfficer = {
+      _id: `off_${Date.now()}`,
+      officerId,
+      name,
+      badgeNumber,
+      email: email.trim().toLowerCase(),
+      passwordHash,
+      role: role || 'INVESTIGATING_OFFICER',
+      department: department || 'Cybercrime Department',
+      createdAt: new Date()
+    };
+
+    const isMongoConnected = mongoose.connection.readyState === 1;
+    if (isMongoConnected) {
+      const existing = await Officer.findOne({ email: newOfficer.email });
+      if (existing) return res.status(400).json({ success: false, message: 'An officer with this email already exists.' });
+      await Officer.create({ ...newOfficer, password: passwordHash });
+    } else {
+      const existing = store.officers.find(o => o.email === newOfficer.email);
+      if (existing) return res.status(400).json({ success: false, message: 'An officer with this email already exists.' });
+      store.officers.push(newOfficer);
+    }
+
+    return res.status(201).json({ success: true, message: `Officer credential created for ${name}.`, data: newOfficer });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateOfficerCredential = async (req, res, next) => {
+  try {
+    const isSuperAdmin = req.user && (req.user.email === 'marpuphani00@gmail.com' || req.user.role === 'ADMIN');
+    if (!isSuperAdmin) {
+      return res.status(403).json({ success: false, message: 'Access denied. Only Super Admin can update officer credentials.' });
+    }
+
+    const officerId = req.params.id;
+    const { name, badgeNumber, email, password, department, role } = req.body;
+
+    const isMongoConnected = mongoose.connection.readyState === 1;
+    if (isMongoConnected) {
+      const off = await Officer.findById(officerId);
+      if (!off) return res.status(404).json({ success: false, message: 'Officer record not found.' });
+
+      if (name) off.name = name;
+      if (badgeNumber) off.badgeNumber = badgeNumber;
+      if (email) off.email = email.trim().toLowerCase();
+      if (department) off.department = department;
+      if (role) off.role = role;
+      if (password) off.password = await bcrypt.hash(password, 10);
+
+      await off.save();
+      return res.status(200).json({ success: true, message: `Officer credentials updated successfully.`, data: off });
+    } else {
+      const offIdx = store.officers.findIndex(o => o._id === officerId || o.officerId === officerId);
+      if (offIdx === -1) return res.status(404).json({ success: false, message: 'Officer record not found.' });
+
+      const off = store.officers[offIdx];
+      if (name) off.name = name;
+      if (badgeNumber) off.badgeNumber = badgeNumber;
+      if (email) off.email = email.trim().toLowerCase();
+      if (department) off.department = department;
+      if (role) off.role = role;
+      if (password) off.passwordHash = await bcrypt.hash(password, 10);
+
+      return res.status(200).json({ success: true, message: `Officer credentials updated successfully.`, data: off });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deleteOfficerCredential = async (req, res, next) => {
+  try {
+    const isSuperAdmin = req.user && (req.user.email === 'marpuphani00@gmail.com' || req.user.role === 'ADMIN');
+    if (!isSuperAdmin) {
+      return res.status(403).json({ success: false, message: 'Access denied. Only Super Admin can delete officer credentials.' });
+    }
+
+    const officerId = req.params.id;
+    const isMongoConnected = mongoose.connection.readyState === 1;
+
+    let targetEmail = '';
+    if (isMongoConnected) {
+      const off = await Officer.findById(officerId);
+      if (off) targetEmail = off.email;
+    } else {
+      const off = store.officers.find(o => o._id === officerId || o.officerId === officerId);
+      if (off) targetEmail = off.email;
+    }
+
+    if (targetEmail === 'marpuphani00@gmail.com') {
+      return res.status(400).json({ success: false, message: 'Super Admin credential (marpuphani00@gmail.com) cannot be deleted.' });
+    }
+
+    if (isMongoConnected) {
+      await Officer.findByIdAndDelete(officerId);
+    } else {
+      store.officers = store.officers.filter(o => o._id !== officerId && o.officerId !== officerId);
+    }
+
+    return res.status(200).json({ success: true, message: 'Officer credential deleted successfully.' });
+  } catch (error) {
+    next(error);
+  }
+};

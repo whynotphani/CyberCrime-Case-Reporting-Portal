@@ -1,6 +1,8 @@
 let allCases = [];
 let currentCaseNumber = null;
 let officerList = [];
+let currentUserEmail = '';
+let allCredentialsList = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
   const token = API.getToken();
@@ -82,6 +84,63 @@ document.addEventListener('DOMContentLoaded', async () => {
     deleteCaseForm.addEventListener('submit', handleConfirmDeleteCase);
   }
 
+  // Manage Credentials Modal Setup (Super Admin marpuphani00@gmail.com Only)
+  const manageCredentialsNavBtn = document.getElementById('manageCredentialsNavBtn');
+  const manageCredentialsModal = document.getElementById('manageCredentialsModal');
+  const closeCredentialsModalBtn = document.getElementById('closeCredentialsModalBtn');
+  const addNewOfficerBtn = document.getElementById('addNewOfficerBtn');
+  const cancelOfficerFormBtn = document.getElementById('cancelOfficerFormBtn');
+  const officerCredentialForm = document.getElementById('officerCredentialForm');
+  const credentialSearchInput = document.getElementById('credentialSearchInput');
+
+  if (manageCredentialsNavBtn && manageCredentialsModal) {
+    manageCredentialsNavBtn.addEventListener('click', () => {
+      if (currentUserEmail !== 'marpuphani00@gmail.com') {
+        showToast('Access restricted to Super Admin marpuphani00@gmail.com', 'error');
+        return;
+      }
+      manageCredentialsModal.classList.add('active');
+      fetchOfficerCredentials();
+    });
+  }
+
+  if (closeCredentialsModalBtn && manageCredentialsModal) {
+    closeCredentialsModalBtn.addEventListener('click', () => manageCredentialsModal.classList.remove('active'));
+  }
+
+  if (manageCredentialsModal) {
+    manageCredentialsModal.addEventListener('click', (e) => {
+      if (e.target === manageCredentialsModal) manageCredentialsModal.classList.remove('active');
+    });
+  }
+
+  if (addNewOfficerBtn) {
+    addNewOfficerBtn.addEventListener('click', () => {
+      resetOfficerForm();
+      document.getElementById('officerFormTitle').innerText = 'Add New Officer Credential';
+      document.getElementById('passReqLabel').innerText = '*';
+      document.getElementById('offPasswordInput').required = true;
+      document.getElementById('officerFormContainer').style.display = 'block';
+    });
+  }
+
+  if (cancelOfficerFormBtn) {
+    cancelOfficerFormBtn.addEventListener('click', () => {
+      document.getElementById('officerFormContainer').style.display = 'none';
+      resetOfficerForm();
+    });
+  }
+
+  if (officerCredentialForm) {
+    officerCredentialForm.addEventListener('submit', handleSaveOfficerCredential);
+  }
+
+  if (credentialSearchInput) {
+    credentialSearchInput.addEventListener('input', () => {
+      renderCredentialsTable(allCredentialsList);
+    });
+  }
+
   document.getElementById('updateStatusForm').addEventListener('submit', handleStatusUpdate);
   document.getElementById('assignOfficerForm').addEventListener('submit', handleAssignOfficer);
 });
@@ -91,7 +150,17 @@ async function loadOfficerProfile() {
     const res = await API.request('/api/auth/me');
     if (res.success && res.user.officer) {
       const off = res.user.officer;
+      currentUserEmail = off.email ? off.email.toLowerCase() : '';
       document.getElementById('officerNameBadge').innerText = `${off.name} (${off.badgeNumber})`;
+
+      const manageNavBtn = document.getElementById('manageCredentialsNavBtn');
+      if (manageNavBtn) {
+        if (currentUserEmail === 'marpuphani00@gmail.com') {
+          manageNavBtn.style.display = 'inline-block';
+        } else {
+          manageNavBtn.style.display = 'none';
+        }
+      }
     }
   } catch (err) {
     showToast('Failed to load officer profile.', 'error');
@@ -414,7 +483,6 @@ async function handleStatusUpdate(e) {
     if (res.success) {
       showToast('Case status updated successfully!', 'success');
       document.getElementById('updateRemarksInput').value = '';
-      // Stay on same page (keep modal open) and refresh live modal data
       await openCaseModal(currentCaseNumber);
       await fetchCases();
     }
@@ -444,12 +512,164 @@ async function handleAssignOfficer(e) {
     if (res.success) {
       showToast('Case assignment forwarded successfully!', 'success');
       document.getElementById('assignRemarksInput').value = '';
-      // Stay on same page (keep modal open) and refresh live modal data
       await openCaseModal(currentCaseNumber);
       await fetchCases();
     }
   } catch (err) {
     showToast(err.message, 'error');
+  }
+}
+
+// ----------------------------------------------------
+// Super Admin Credential Management Functions
+// (Restricted to marpuphani00@gmail.com)
+// ----------------------------------------------------
+async function fetchOfficerCredentials() {
+  try {
+    const res = await API.request('/api/officer/credentials');
+    if (res.success) {
+      allCredentialsList = res.data;
+      renderCredentialsTable(allCredentialsList);
+    }
+  } catch (err) {
+    showToast(err.message || 'Failed to load officer credentials list.', 'error');
+  }
+}
+
+function renderCredentialsTable(list) {
+  const tbody = document.getElementById('credentialsTableBody');
+  if (!tbody) return;
+
+  const search = document.getElementById('credentialSearchInput') ? document.getElementById('credentialSearchInput').value.trim().toLowerCase() : '';
+  let filtered = [...list];
+  if (search) {
+    filtered = filtered.filter(o =>
+      (o.name && o.name.toLowerCase().includes(search)) ||
+      (o.badgeNumber && o.badgeNumber.toLowerCase().includes(search)) ||
+      (o.email && o.email.toLowerCase().includes(search)) ||
+      (o.department && o.department.toLowerCase().includes(search))
+    );
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center; padding: 2rem; color: var(--text-muted);">
+          No officer credentials found.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(o => {
+    const isSelf = o.email && o.email.toLowerCase() === 'marpuphani00@gmail.com';
+    return `
+      <tr>
+        <td style="font-weight: 600; color: #fff;">${o.name}</td>
+        <td><span class="badge" style="background: rgba(6,182,212,0.15); color: var(--accent-cyan);">${o.badgeNumber}</span></td>
+        <td style="font-family: monospace; font-size: 0.88rem; color: var(--text-main);">${o.email}</td>
+        <td style="font-size: 0.85rem; color: var(--text-muted);">${o.department || 'N/A'}</td>
+        <td><span class="badge ${o.role === 'ADMIN' ? 'badge-priority-HIGH' : 'badge-status-SUBMITTED'}">${o.role}</span></td>
+        <td>
+          <div style="display: flex; gap: 0.35rem;">
+            <button class="btn btn-sm btn-accent" style="padding: 0.35rem 0.65rem;" onclick="openEditOfficerForm('${o._id || o.officerId}')">✏️ Edit</button>
+            ${isSelf ? '' : `<button class="btn btn-sm btn-danger" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.35rem 0.65rem;" onclick="promptDeleteOfficer('${o._id || o.officerId}', '${o.name}')">🗑️ Delete</button>`}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function resetOfficerForm() {
+  document.getElementById('editOfficerId').value = '';
+  document.getElementById('offNameInput').value = '';
+  document.getElementById('offBadgeInput').value = '';
+  document.getElementById('offEmailInput').value = '';
+  document.getElementById('offPasswordInput').value = '';
+  document.getElementById('offDeptInput').value = '';
+  document.getElementById('offRoleSelect').value = 'INVESTIGATING_OFFICER';
+}
+
+function openEditOfficerForm(id) {
+  const off = allCredentialsList.find(o => o._id === id || o.officerId === id);
+  if (!off) return;
+
+  document.getElementById('editOfficerId').value = off._id || off.officerId;
+  document.getElementById('offNameInput').value = off.name || '';
+  document.getElementById('offBadgeInput').value = off.badgeNumber || '';
+  document.getElementById('offEmailInput').value = off.email || '';
+  document.getElementById('offPasswordInput').value = '';
+  document.getElementById('offDeptInput').value = off.department || '';
+  document.getElementById('offRoleSelect').value = off.role || 'INVESTIGATING_OFFICER';
+
+  document.getElementById('officerFormTitle').innerText = `Edit Credential for ${off.name}`;
+  document.getElementById('passReqLabel').innerText = '(Optional - Leave blank to keep current password)';
+  document.getElementById('offPasswordInput').required = false;
+
+  document.getElementById('officerFormContainer').style.display = 'block';
+}
+
+async function handleSaveOfficerCredential(e) {
+  e.preventDefault();
+  const id = document.getElementById('editOfficerId').value;
+  const name = document.getElementById('offNameInput').value.trim();
+  const badgeNumber = document.getElementById('offBadgeInput').value.trim();
+  const email = document.getElementById('offEmailInput').value.trim();
+  const password = document.getElementById('offPasswordInput').value.trim();
+  const department = document.getElementById('offDeptInput').value.trim();
+  const role = document.getElementById('offRoleSelect').value;
+
+  const bodyData = { name, badgeNumber, email, department, role };
+  if (password) bodyData.password = password;
+
+  try {
+    let res;
+    if (id) {
+      res = await API.request(`/api/officer/credentials/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(bodyData)
+      });
+    } else {
+      if (!password) {
+        showToast('Password is required for new officer credentials.', 'error');
+        return;
+      }
+      res = await API.request('/api/officer/credentials', {
+        method: 'POST',
+        body: JSON.stringify({ ...bodyData, password })
+      });
+    }
+
+    if (res.success) {
+      showToast(res.message || 'Officer credential saved successfully!', 'success');
+      document.getElementById('officerFormContainer').style.display = 'none';
+      resetOfficerForm();
+      await fetchOfficerCredentials();
+      await fetchOfficersList();
+    }
+  } catch (err) {
+    showToast(err.message || 'Failed to save officer credential.', 'error');
+  }
+}
+
+async function promptDeleteOfficer(id, name) {
+  const confirmed = confirm(`⚠️ Are you sure you want to delete credentials for ${name}?`);
+  if (!confirmed) return;
+
+  try {
+    const res = await API.request(`/api/officer/credentials/${id}`, {
+      method: 'DELETE'
+    });
+
+    if (res.success) {
+      showToast(res.message || `Officer ${name} deleted successfully.`, 'success');
+      await fetchOfficerCredentials();
+      await fetchOfficersList();
+    }
+  } catch (err) {
+    showToast(err.message || 'Failed to delete officer credential.', 'error');
   }
 }
 
