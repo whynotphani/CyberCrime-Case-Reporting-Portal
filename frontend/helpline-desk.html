@@ -59,6 +59,7 @@
           <div class="form-group">
             <label for="initialCategory">Complaint Category *</label>
             <select id="initialCategory" class="form-control" required>
+              <option value="" disabled selected>-- Select Complaint Category --</option>
               <option value="Financial Fraud">Financial Fraud</option>
               <option value="Non-Financial Cybercrime">Non-Financial Cybercrime</option>
               <option value="Mobile Theft/Loss">Mobile Theft/Loss</option>
@@ -71,8 +72,9 @@
           <div class="form-group">
             <label for="severity">Severity / Intensity Level *</label>
             <select id="severity" class="form-control" required>
+              <option value="" disabled selected>-- Select Severity Level --</option>
               <option value="HIGH">High Severity (Loss > ₹1L / Immediate Threat)</option>
-              <option value="MEDIUM" selected>Medium Severity (Standard Cyber Incident)</option>
+              <option value="MEDIUM">Medium Severity (Standard Cyber Incident)</option>
               <option value="LOW">Low Severity (Minor Spam / Inquiry)</option>
             </select>
           </div>
@@ -87,6 +89,7 @@
           <div class="form-group">
             <label for="idProofType">ID Proof Type (Optional)</label>
             <select id="idProofType" class="form-control">
+              <option value="" selected>-- Select ID Proof Type (Optional) --</option>
               <option value="AADHAAR">Aadhaar Card</option>
               <option value="PAN">PAN Card</option>
               <option value="VOTER_ID">Voter ID</option>

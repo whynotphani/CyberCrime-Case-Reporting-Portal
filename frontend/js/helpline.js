@@ -26,6 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      if (!initialCategory) {
+        showToast('Please select a valid complaint category.', 'error');
+        return;
+      }
+
+      if (!severity) {
+        showToast('Please select a valid severity level.', 'error');
+        return;
+      }
+
       if (!description || description.length < 5) {
         showToast('Please enter an initial complaint description (min 5 characters).', 'error');
         return;
