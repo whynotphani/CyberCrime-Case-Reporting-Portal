@@ -12,10 +12,20 @@ const authRoutes = require('./backend/routes/authRoutes');
 const citizenRoutes = require('./backend/routes/citizenRoutes');
 const officerRoutes = require('./backend/routes/officerRoutes');
 
+const { seedOfficers, seedSampleCases } = require('./backend/services/seedService');
+
 const app = express();
 
-// Connect to Database
-connectDB();
+// Connect to Database and Seed Initial Portal Data
+(async () => {
+  await connectDB();
+  try {
+    await seedOfficers();
+    await seedSampleCases();
+  } catch (err) {
+    console.error('[Server Auto-Seed Error]', err);
+  }
+})();
 
 // Core Middlewares & Security Headers
 app.use(cors({
