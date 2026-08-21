@@ -102,17 +102,6 @@
           <option value="RESOLVED">Resolved</option>
           <option value="CLOSED">Closed</option>
         </select>
-
-        <select id="sortFilter" class="form-control" style="width: 190px;">
-          <option value="newest">Sort: Newest First</option>
-          <option value="oldest">Sort: Oldest First</option>
-          <option value="priority_desc">Sort: Priority (High → Low)</option>
-          <option value="priority_asc">Sort: Priority (Low → High)</option>
-          <option value="loss_desc">Sort: Financial Loss (High → Low)</option>
-          <option value="loss_asc">Sort: Financial Loss (Low → High)</option>
-          <option value="number_asc">Sort: Case Number (A → Z)</option>
-          <option value="number_desc">Sort: Case Number (Z → A)</option>
-        </select>
       </div>
 
     </div>
@@ -123,12 +112,12 @@
         <table class="data-table">
           <thead>
             <tr>
-              <th onclick="toggleColumnSort('number')" style="cursor: pointer;" title="Click to sort by Case Number">Case Registration Number ↕</th>
-              <th onclick="toggleColumnSort('category')" style="cursor: pointer;" title="Click to sort by Category">Crime Category ↕</th>
-              <th onclick="toggleColumnSort('priority')" style="cursor: pointer;" title="Click to sort by Severity">Severity ↕</th>
-              <th onclick="toggleColumnSort('date')" style="cursor: pointer;" title="Click to sort by Submission Date">Submission Date ↕</th>
-              <th onclick="toggleColumnSort('status')" style="cursor: pointer;" title="Click to sort by Status">Current Status ↕</th>
-              <th onclick="toggleColumnSort('loss')" style="cursor: pointer;" title="Click to sort by Financial Loss">Financial Loss ↕</th>
+              <th>Case Registration Number</th>
+              <th>Crime Category</th>
+              <th>Severity</th>
+              <th>Submission Date</th>
+              <th>Current Status</th>
+              <th>Financial Loss</th>
               <th>Assigned Expert</th>
               <th>Action</th>
             </tr>
@@ -281,6 +270,49 @@
 
         </div>
       </div>
+
+    </div>
+  </div>
+
+  <!-- Delete Reason Confirmation Modal -->
+  <div id="deleteReasonModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 480px;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+        <h3 style="font-size: 1.2rem; color: #ef4444; margin: 0;">⚠️ Delete Case Confirmation</h3>
+        <button id="closeDeleteModalBtn" class="btn btn-sm btn-secondary">✕</button>
+      </div>
+
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+        You are deleting Case <strong id="deleteModalCaseNumber" style="color: var(--accent-cyan); font-family: monospace;">-</strong>. Please select the reason for deletion.
+      </p>
+
+      <form id="deleteCaseForm">
+        
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="deleteReasonSelect">Reason for Deletion *</label>
+          <select id="deleteReasonSelect" class="form-control" required>
+            <option value="" disabled selected>-- Select Deletion Reason --</option>
+            <option value="Duplicate Complaint / Entry">Duplicate Complaint / Entry</option>
+            <option value="False / Spam / Test Complaint">False / Spam / Test Complaint</option>
+            <option value="Resolved Privately by Parties">Resolved Privately by Parties</option>
+            <option value="Out of Jurisdiction / Transferred">Out of Jurisdiction / Transferred</option>
+            <option value="Insufficient Evidence / Unsubstantiated">Insufficient Evidence / Unsubstantiated</option>
+            <option value="Other">Other (Specify Below)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label for="deleteRemarksInput">Additional Remarks / Audit Notes (Optional)</label>
+          <textarea id="deleteRemarksInput" class="form-control" rows="3" placeholder="Provide any additional details or audit notes for deleting this case..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" id="cancelDeleteBtn" class="btn btn-sm btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-sm btn-danger" style="background: #ef4444; border: none; font-weight: 600; padding: 0.65rem 1.25rem;">Confirm & Delete Case</button>
+        </div>
+
+      </form>
 
     </div>
   </div>

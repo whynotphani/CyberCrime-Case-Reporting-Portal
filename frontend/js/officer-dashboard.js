@@ -1,7 +1,6 @@
 let allCases = [];
 let currentCaseNumber = null;
 let officerList = [];
-let currentColumnSort = { column: null, asc: true };
 
 document.addEventListener('DOMContentLoaded', async () => {
   const token = API.getToken();
@@ -21,11 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('priorityFilter').addEventListener('change', fetchCases);
   document.getElementById('statusFilter').addEventListener('change', fetchCases);
   document.getElementById('searchInput').addEventListener('input', debounce(fetchCases, 300));
-
-  const sortFilter = document.getElementById('sortFilter');
-  if (sortFilter) {
-    sortFilter.addEventListener('change', renderSortedCases);
-  }
 
   const logoutOfficerBtn = document.getElementById('logoutOfficerBtn');
   if (logoutOfficerBtn) {
@@ -48,9 +42,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (caseDetailModal) caseDetailModal.classList.remove('active');
   });
 
+  // Delete Case Reason Modal Setup
   const deleteCaseBtn = document.getElementById('deleteCaseBtn');
-  if (deleteCaseBtn) {
-    deleteCaseBtn.addEventListener('click', () => handleDeleteCase());
+  const deleteReasonModal = document.getElementById('deleteReasonModal');
+  const closeDeleteModalBtn = document.getElementById('closeDeleteModalBtn');
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+  const deleteCaseForm = document.getElementById('deleteCaseForm');
+
+  if (deleteCaseBtn && deleteReasonModal) {
+    deleteCaseBtn.addEventListener('click', () => {
+      if (!currentCaseNumber) return;
+      document.getElementById('deleteModalCaseNumber').innerText = currentCaseNumber;
+      document.getElementById('deleteReasonSelect').value = '';
+      document.getElementById('deleteRemarksInput').value = '';
+      deleteReasonModal.classList.add('active');
+    });
+  }
+
+  if (closeDeleteModalBtn && deleteReasonModal) {
+    closeDeleteModalBtn.addEventListener('click', () => deleteReasonModal.classList.remove('active'));
+  }
+
+  if (cancelDeleteBtn && deleteReasonModal) {
+    cancelDeleteBtn.addEventListener('click', () => deleteReasonModal.classList.remove('active'));
+  }
+
+  if (deleteReasonModal) {
+    deleteReasonModal.addEventListener('click', (e) => {
+      if (e.target === deleteReasonModal) deleteReasonModal.classList.remove('active');
+    });
+  }
+
+  if (deleteCaseForm) {
+    deleteCaseForm.addEventListener('submit', handleConfirmDeleteCase);
   }
 
   document.getElementById('updateStatusForm').addEventListener('submit', handleStatusUpdate);
@@ -86,82 +110,11 @@ async function fetchCases() {
     if (res.success) {
       allCases = res.data;
       updateMetrics(allCases);
-      renderSortedCases();
+      renderCaseTable(allCases);
     }
   } catch (err) {
     showToast(err.message, 'error');
   }
-}
-
-function renderSortedCases() {
-  const sortSelect = document.getElementById('sortFilter');
-  const sortBy = sortSelect ? sortSelect.value : 'newest';
-  const sorted = sortCasesData(allCases, sortBy);
-  renderCaseTable(sorted);
-}
-
-function sortCasesData(cases, sortBy) {
-  const list = [...cases];
-  const priorityWeight = { HIGH: 3, MEDIUM: 2, LOW: 1 };
-
-  switch (sortBy) {
-    case 'newest':
-      list.sort((a, b) => new Date(b.submittedAt || b.createdAt) - new Date(a.submittedAt || a.createdAt));
-      break;
-    case 'oldest':
-      list.sort((a, b) => new Date(a.submittedAt || a.createdAt) - new Date(b.submittedAt || b.createdAt));
-      break;
-    case 'priority_desc':
-      list.sort((a, b) => (priorityWeight[b.priority] || 0) - (priorityWeight[a.priority] || 0));
-      break;
-    case 'priority_asc':
-      list.sort((a, b) => (priorityWeight[a.priority] || 0) - (priorityWeight[b.priority] || 0));
-      break;
-    case 'loss_desc':
-      list.sort((a, b) => (b.lossAmount || 0) - (a.lossAmount || 0));
-      break;
-    case 'loss_asc':
-      list.sort((a, b) => (a.lossAmount || 0) - (b.lossAmount || 0));
-      break;
-    case 'number_asc':
-      list.sort((a, b) => a.caseNumber.localeCompare(b.caseNumber));
-      break;
-    case 'number_desc':
-      list.sort((a, b) => b.caseNumber.localeCompare(a.caseNumber));
-      break;
-    default:
-      list.sort((a, b) => new Date(b.submittedAt || b.createdAt) - new Date(a.submittedAt || a.createdAt));
-  }
-  return list;
-}
-
-function toggleColumnSort(colType) {
-  const sortSelect = document.getElementById('sortFilter');
-  if (!sortSelect) return;
-
-  if (currentColumnSort.column === colType) {
-    currentColumnSort.asc = !currentColumnSort.asc;
-  } else {
-    currentColumnSort.column = colType;
-    currentColumnSort.asc = true;
-  }
-
-  if (colType === 'number') sortSelect.value = currentColumnSort.asc ? 'number_asc' : 'number_desc';
-  if (colType === 'priority') sortSelect.value = currentColumnSort.asc ? 'priority_asc' : 'priority_desc';
-  if (colType === 'date') sortSelect.value = currentColumnSort.asc ? 'oldest' : 'newest';
-  if (colType === 'loss') sortSelect.value = currentColumnSort.asc ? 'loss_asc' : 'loss_desc';
-  if (colType === 'category') {
-    allCases.sort((a, b) => currentColumnSort.asc ? a.category.localeCompare(b.category) : b.category.localeCompare(a.category));
-    renderCaseTable(allCases);
-    return;
-  }
-  if (colType === 'status') {
-    allCases.sort((a, b) => currentColumnSort.asc ? a.status.localeCompare(b.status) : b.status.localeCompare(a.status));
-    renderCaseTable(allCases);
-    return;
-  }
-
-  renderSortedCases();
 }
 
 async function fetchOfficersList() {
@@ -218,7 +171,7 @@ function renderCaseTable(cases) {
     return;
   }
 
-  // Render Desktop Data Table
+  // Render Desktop Data Table (Only Review Case option)
   if (tbody) {
     tbody.innerHTML = cases.map(c => {
       const dateStr = c.submittedAt ? new Date(c.submittedAt).toLocaleDateString() : new Date(c.createdAt).toLocaleDateString();
@@ -235,14 +188,9 @@ function renderCaseTable(cases) {
           <td style="font-size:0.88rem; font-weight:600; color:var(--accent-gold);">${lossStr}</td>
           <td style="font-size:0.85rem; color:var(--text-muted);">${assigned}</td>
           <td>
-            <div style="display: flex; gap: 0.35rem; justify-content: center; align-items: center;">
-              <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
-                Review Case
-              </button>
-              <button class="btn btn-sm btn-danger" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.45rem 0.6rem;" onclick="promptDeleteCase('${c.caseNumber}')" title="Delete Case ${c.caseNumber}">
-                🗑️
-              </button>
-            </div>
+            <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
+              Review Case
+            </button>
           </td>
         </tr>
       `;
@@ -283,14 +231,9 @@ function renderCaseTable(cases) {
               <div>Date: ${dateStr}</div>
               <div>Expert: ${assigned}</div>
             </div>
-            <div style="display:flex; gap:0.4rem;">
-              <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
-                Review Case →
-              </button>
-              <button class="btn btn-sm btn-danger" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.45rem 0.65rem;" onclick="promptDeleteCase('${c.caseNumber}')">
-                🗑️
-              </button>
-            </div>
+            <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
+              Review Case →
+            </button>
           </div>
         </div>
       `;
@@ -368,6 +311,43 @@ async function openCaseModal(caseNumber) {
   }
 }
 
+async function handleConfirmDeleteCase(e) {
+  e.preventDefault();
+  if (!currentCaseNumber) return;
+
+  const reason = document.getElementById('deleteReasonSelect').value;
+  const remarks = document.getElementById('deleteRemarksInput').value.trim();
+
+  if (!reason) {
+    showToast('Please select a reason for deleting this case.', 'error');
+    return;
+  }
+
+  try {
+    const res = await API.request(`/api/officer/cases/${currentCaseNumber}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ reason, remarks })
+    });
+
+    if (res && res.success) {
+      showToast(res.message || `Case ${currentCaseNumber} deleted successfully!`, 'success');
+      
+      const deleteReasonModal = document.getElementById('deleteReasonModal');
+      if (deleteReasonModal) deleteReasonModal.classList.remove('active');
+
+      const caseDetailModal = document.getElementById('caseDetailModal');
+      if (caseDetailModal) caseDetailModal.classList.remove('active');
+
+      currentCaseNumber = null;
+      await fetchCases();
+    } else {
+      showToast(res ? res.message : 'Failed to delete case.', 'error');
+    }
+  } catch (err) {
+    showToast(err.message || 'Failed to delete case.', 'error');
+  }
+}
+
 async function handleStatusUpdate(e) {
   e.preventDefault();
   if (!currentCaseNumber) return;
@@ -423,37 +403,6 @@ async function handleAssignOfficer(e) {
     }
   } catch (err) {
     showToast(err.message, 'error');
-  }
-}
-
-async function promptDeleteCase(caseNumber) {
-  await handleDeleteCase(caseNumber);
-}
-
-async function handleDeleteCase(targetCaseNumber = null) {
-  const caseToDelete = targetCaseNumber || currentCaseNumber;
-  if (!caseToDelete) {
-    showToast('No active case selected for deletion.', 'error');
-    return;
-  }
-
-  const confirmed = confirm(`⚠️ Are you sure you want to permanently delete Case ${caseToDelete}? This action cannot be undone.`);
-  if (!confirmed) return;
-
-  try {
-    const res = await API.request(`/api/officer/cases/${caseToDelete}`, 'DELETE');
-
-    if (res && res.success) {
-      showToast(res.message || `Case ${caseToDelete} deleted successfully!`, 'success');
-      const caseDetailModal = document.getElementById('caseDetailModal');
-      if (caseDetailModal) caseDetailModal.classList.remove('active');
-      currentCaseNumber = null;
-      await fetchCases();
-    } else {
-      showToast(res ? res.message : 'Failed to delete case.', 'error');
-    }
-  } catch (err) {
-    showToast(err.message || 'Failed to delete case.', 'error');
   }
 }
 
