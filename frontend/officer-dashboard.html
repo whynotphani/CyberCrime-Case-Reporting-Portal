@@ -102,6 +102,17 @@
           <option value="RESOLVED">Resolved</option>
           <option value="CLOSED">Closed</option>
         </select>
+
+        <select id="sortFilter" class="form-control" style="width: 190px;">
+          <option value="newest">Sort: Newest First</option>
+          <option value="oldest">Sort: Oldest First</option>
+          <option value="priority_desc">Sort: Priority (High → Low)</option>
+          <option value="priority_asc">Sort: Priority (Low → High)</option>
+          <option value="loss_desc">Sort: Financial Loss (High → Low)</option>
+          <option value="loss_asc">Sort: Financial Loss (Low → High)</option>
+          <option value="number_asc">Sort: Case Number (A → Z)</option>
+          <option value="number_desc">Sort: Case Number (Z → A)</option>
+        </select>
       </div>
 
     </div>
@@ -112,12 +123,12 @@
         <table class="data-table">
           <thead>
             <tr>
-              <th>Case Registration Number</th>
-              <th>Crime Category</th>
-              <th>Severity</th>
-              <th>Submission Date</th>
-              <th>Current Status</th>
-              <th>Financial Loss</th>
+              <th onclick="toggleColumnSort('number')" style="cursor: pointer;" title="Click to sort by Case Number">Case Registration Number ↕</th>
+              <th onclick="toggleColumnSort('category')" style="cursor: pointer;" title="Click to sort by Category">Crime Category ↕</th>
+              <th onclick="toggleColumnSort('priority')" style="cursor: pointer;" title="Click to sort by Severity">Severity ↕</th>
+              <th onclick="toggleColumnSort('date')" style="cursor: pointer;" title="Click to sort by Submission Date">Submission Date ↕</th>
+              <th onclick="toggleColumnSort('status')" style="cursor: pointer;" title="Click to sort by Status">Current Status ↕</th>
+              <th onclick="toggleColumnSort('loss')" style="cursor: pointer;" title="Click to sort by Financial Loss">Financial Loss ↕</th>
               <th>Assigned Expert</th>
               <th>Action</th>
             </tr>

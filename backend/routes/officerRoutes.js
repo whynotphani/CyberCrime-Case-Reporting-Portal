@@ -7,8 +7,9 @@ router.use(protect, requireOfficer);
 
 router.get('/cases', officerController.getCases);
 router.get('/list', officerController.getOfficerList);
-router.get('/cases/:caseNumber', officerController.getCaseByNumber);
-router.delete('/cases/:caseNumber', officerController.deleteCase);
+router.route('/cases/:caseNumber')
+  .get(officerController.getCaseByNumber)
+  .delete(officerController.deleteCase);
 
 router.route('/cases/:caseNumber/status')
   .put(officerController.updateCaseStatus)

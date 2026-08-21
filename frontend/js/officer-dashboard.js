@@ -1,6 +1,7 @@
 let allCases = [];
 let currentCaseNumber = null;
 let officerList = [];
+let currentColumnSort = { column: null, asc: true };
 
 document.addEventListener('DOMContentLoaded', async () => {
   const token = API.getToken();
@@ -20,6 +21,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('priorityFilter').addEventListener('change', fetchCases);
   document.getElementById('statusFilter').addEventListener('change', fetchCases);
   document.getElementById('searchInput').addEventListener('input', debounce(fetchCases, 300));
+
+  const sortFilter = document.getElementById('sortFilter');
+  if (sortFilter) {
+    sortFilter.addEventListener('change', renderSortedCases);
+  }
 
   const logoutOfficerBtn = document.getElementById('logoutOfficerBtn');
   if (logoutOfficerBtn) {
@@ -44,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const deleteCaseBtn = document.getElementById('deleteCaseBtn');
   if (deleteCaseBtn) {
-    deleteCaseBtn.addEventListener('click', handleDeleteCase);
+    deleteCaseBtn.addEventListener('click', () => handleDeleteCase());
   }
 
   document.getElementById('updateStatusForm').addEventListener('submit', handleStatusUpdate);
@@ -80,11 +86,82 @@ async function fetchCases() {
     if (res.success) {
       allCases = res.data;
       updateMetrics(allCases);
-      renderCaseTable(allCases);
+      renderSortedCases();
     }
   } catch (err) {
     showToast(err.message, 'error');
   }
+}
+
+function renderSortedCases() {
+  const sortSelect = document.getElementById('sortFilter');
+  const sortBy = sortSelect ? sortSelect.value : 'newest';
+  const sorted = sortCasesData(allCases, sortBy);
+  renderCaseTable(sorted);
+}
+
+function sortCasesData(cases, sortBy) {
+  const list = [...cases];
+  const priorityWeight = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+
+  switch (sortBy) {
+    case 'newest':
+      list.sort((a, b) => new Date(b.submittedAt || b.createdAt) - new Date(a.submittedAt || a.createdAt));
+      break;
+    case 'oldest':
+      list.sort((a, b) => new Date(a.submittedAt || a.createdAt) - new Date(b.submittedAt || b.createdAt));
+      break;
+    case 'priority_desc':
+      list.sort((a, b) => (priorityWeight[b.priority] || 0) - (priorityWeight[a.priority] || 0));
+      break;
+    case 'priority_asc':
+      list.sort((a, b) => (priorityWeight[a.priority] || 0) - (priorityWeight[b.priority] || 0));
+      break;
+    case 'loss_desc':
+      list.sort((a, b) => (b.lossAmount || 0) - (a.lossAmount || 0));
+      break;
+    case 'loss_asc':
+      list.sort((a, b) => (a.lossAmount || 0) - (b.lossAmount || 0));
+      break;
+    case 'number_asc':
+      list.sort((a, b) => a.caseNumber.localeCompare(b.caseNumber));
+      break;
+    case 'number_desc':
+      list.sort((a, b) => b.caseNumber.localeCompare(a.caseNumber));
+      break;
+    default:
+      list.sort((a, b) => new Date(b.submittedAt || b.createdAt) - new Date(a.submittedAt || a.createdAt));
+  }
+  return list;
+}
+
+function toggleColumnSort(colType) {
+  const sortSelect = document.getElementById('sortFilter');
+  if (!sortSelect) return;
+
+  if (currentColumnSort.column === colType) {
+    currentColumnSort.asc = !currentColumnSort.asc;
+  } else {
+    currentColumnSort.column = colType;
+    currentColumnSort.asc = true;
+  }
+
+  if (colType === 'number') sortSelect.value = currentColumnSort.asc ? 'number_asc' : 'number_desc';
+  if (colType === 'priority') sortSelect.value = currentColumnSort.asc ? 'priority_asc' : 'priority_desc';
+  if (colType === 'date') sortSelect.value = currentColumnSort.asc ? 'oldest' : 'newest';
+  if (colType === 'loss') sortSelect.value = currentColumnSort.asc ? 'loss_asc' : 'loss_desc';
+  if (colType === 'category') {
+    allCases.sort((a, b) => currentColumnSort.asc ? a.category.localeCompare(b.category) : b.category.localeCompare(a.category));
+    renderCaseTable(allCases);
+    return;
+  }
+  if (colType === 'status') {
+    allCases.sort((a, b) => currentColumnSort.asc ? a.status.localeCompare(b.status) : b.status.localeCompare(a.status));
+    renderCaseTable(allCases);
+    return;
+  }
+
+  renderSortedCases();
 }
 
 async function fetchOfficersList() {
@@ -158,9 +235,14 @@ function renderCaseTable(cases) {
           <td style="font-size:0.88rem; font-weight:600; color:var(--accent-gold);">${lossStr}</td>
           <td style="font-size:0.85rem; color:var(--text-muted);">${assigned}</td>
           <td>
-            <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
-              Review Case
-            </button>
+            <div style="display: flex; gap: 0.35rem; justify-content: center; align-items: center;">
+              <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
+                Review Case
+              </button>
+              <button class="btn btn-sm btn-danger" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.45rem 0.6rem;" onclick="promptDeleteCase('${c.caseNumber}')" title="Delete Case ${c.caseNumber}">
+                🗑️
+              </button>
+            </div>
           </td>
         </tr>
       `;
@@ -181,8 +263,10 @@ function renderCaseTable(cases) {
             <span class="badge badge-status-${c.status}">${c.status.replace(/_/g, ' ')}</span>
           </div>
 
-          <h4 class="card-title">${c.category}</h4>
-          
+          <div style="font-weight:600; font-size:1.02rem; margin-bottom:0.4rem; color:#fff;">
+            ${c.category}
+          </div>
+
           <div class="card-meta">
             <div>
               <span class="label">Priority / Severity</span>
@@ -199,9 +283,14 @@ function renderCaseTable(cases) {
               <div>Date: ${dateStr}</div>
               <div>Expert: ${assigned}</div>
             </div>
-            <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
-              Review Case →
-            </button>
+            <div style="display:flex; gap:0.4rem;">
+              <button class="btn btn-sm btn-primary" onclick="openCaseModal('${c.caseNumber}')">
+                Review Case →
+              </button>
+              <button class="btn btn-sm btn-danger" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.45rem 0.65rem;" onclick="promptDeleteCase('${c.caseNumber}')">
+                🗑️
+              </button>
+            </div>
           </div>
         </div>
       `;
@@ -263,14 +352,14 @@ async function openCaseModal(caseNumber) {
       const historyContainer = document.getElementById('modalHistoryList');
       historyContainer.innerHTML = history.map(h => `
         <div style="margin-bottom:0.75rem; font-size:0.85rem; border-left:2px solid var(--primary); padding-left:0.75rem;">
-          <strong style="color:#fff;">${h.status.replace(/_/g, ' ')}</strong> 
-          <span style="color:var(--text-dim);">— ${new Date(h.timestamp).toLocaleString()}</span>
-          <div style="color:var(--text-muted);">${h.remarks}</div>
+          <div style="display:flex; justify-content:space-between; color:var(--text-muted); font-size:0.78rem;">
+            <span>By: ${h.updatedByOfficer ? h.updatedByOfficer.name : h.updatedByRole}</span>
+            <span>${new Date(h.timestamp).toLocaleString()}</span>
+          </div>
+          <div style="font-weight:600; color:var(--accent-cyan); margin:0.15rem 0;">Status: ${h.status.replace(/_/g, ' ')}</div>
+          <p style="margin:0; color:var(--text-main);">${h.remarks || ''}</p>
         </div>
       `).join('');
-
-      document.getElementById('updateStatusSelect').value = c.status;
-      document.getElementById('updatePrioritySelect').value = c.priority;
 
       document.getElementById('caseDetailModal').classList.add('active');
     }
@@ -284,13 +373,17 @@ async function handleStatusUpdate(e) {
   if (!currentCaseNumber) return;
 
   const status = document.getElementById('updateStatusSelect').value;
-  const priority = document.getElementById('updatePrioritySelect').value;
-  const remarks = document.getElementById('updateRemarksInput').value;
+  const remarks = document.getElementById('updateRemarksInput').value.trim();
+
+  if (!status) {
+    showToast('Please select a target status.', 'error');
+    return;
+  }
 
   try {
     const res = await API.request(`/api/officer/cases/${currentCaseNumber}/status`, {
       method: 'PATCH',
-      body: JSON.stringify({ status, priority, remarks })
+      body: JSON.stringify({ status, remarks })
     });
 
     if (res.success) {
@@ -309,10 +402,10 @@ async function handleAssignOfficer(e) {
   if (!currentCaseNumber) return;
 
   const targetOfficerId = document.getElementById('targetOfficerSelect').value;
-  const remarks = document.getElementById('assignRemarksInput').value;
+  const remarks = document.getElementById('assignRemarksInput').value.trim();
 
   if (!targetOfficerId) {
-    showToast('Please select an officer to assign.', 'error');
+    showToast('Please select an investigating officer.', 'error');
     return;
   }
 
@@ -333,38 +426,41 @@ async function handleAssignOfficer(e) {
   }
 }
 
+async function promptDeleteCase(caseNumber) {
+  await handleDeleteCase(caseNumber);
+}
+
+async function handleDeleteCase(targetCaseNumber = null) {
+  const caseToDelete = targetCaseNumber || currentCaseNumber;
+  if (!caseToDelete) {
+    showToast('No active case selected for deletion.', 'error');
+    return;
+  }
+
+  const confirmed = confirm(`⚠️ Are you sure you want to permanently delete Case ${caseToDelete}? This action cannot be undone.`);
+  if (!confirmed) return;
+
+  try {
+    const res = await API.request(`/api/officer/cases/${caseToDelete}`, 'DELETE');
+
+    if (res && res.success) {
+      showToast(res.message || `Case ${caseToDelete} deleted successfully!`, 'success');
+      const caseDetailModal = document.getElementById('caseDetailModal');
+      if (caseDetailModal) caseDetailModal.classList.remove('active');
+      currentCaseNumber = null;
+      await fetchCases();
+    } else {
+      showToast(res ? res.message : 'Failed to delete case.', 'error');
+    }
+  } catch (err) {
+    showToast(err.message || 'Failed to delete case.', 'error');
+  }
+}
+
 function debounce(func, delay) {
   let timer;
   return function (...args) {
     clearTimeout(timer);
     timer = setTimeout(() => func.apply(this, args), delay);
   };
-}
-
-async function promptDeleteCase(caseNumber) {
-  currentCaseNumber = caseNumber;
-  await handleDeleteCase();
-}
-
-async function handleDeleteCase() {
-  if (!currentCaseNumber) return;
-
-  const confirmed = confirm(`⚠️ Are you sure you want to permanently delete Case ${currentCaseNumber}? This action cannot be undone.`);
-  if (!confirmed) return;
-
-  try {
-    const res = await API.request(`/api/officer/cases/${currentCaseNumber}`, {
-      method: 'DELETE'
-    });
-
-    if (res.success) {
-      showToast(res.message || `Case ${currentCaseNumber} deleted successfully.`, 'success');
-      const caseDetailModal = document.getElementById('caseDetailModal');
-      if (caseDetailModal) caseDetailModal.classList.remove('active');
-      currentCaseNumber = null;
-      await fetchCases();
-    }
-  } catch (err) {
-    showToast(err.message || 'Failed to delete case.', 'error');
-  }
 }
