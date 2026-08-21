@@ -576,21 +576,30 @@ function renderCredentialsTable(list) {
 
     return `
       <tr>
-        <td style="font-weight: 600; color: #fff;">${o.name}</td>
-        <td><span class="badge" style="background: rgba(6,182,212,0.15); color: var(--accent-cyan);">${o.badgeNumber}</span></td>
-        <td style="font-family: monospace; font-size: 0.88rem; color: var(--text-main);">${o.email}</td>
-        <td>
-          <div style="display: flex; align-items: center; gap: 0.35rem;">
-            <input type="password" readonly value="${pwd}" id="pwdInput_${o._id || o.officerId}" style="background: rgba(15,23,42,0.6); border: 1px solid var(--border-color); color: #f59e0b; font-family: monospace; font-size: 0.85rem; padding: 0.2rem 0.4rem; border-radius: 4px; width: 100px;">
-            <button type="button" class="btn btn-sm btn-secondary" style="padding: 0.15rem 0.4rem; font-size: 0.75rem;" onclick="toggleShowPassword('pwdInput_${o._id || o.officerId}')">👁️</button>
+        <td style="font-weight: 600; color: #fff; padding-left: 1.25rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.05rem;">👮‍♂️</span>
+            <span>${o.name}</span>
           </div>
         </td>
-        <td style="font-size: 0.85rem; color: var(--text-muted);">${o.department || 'Financial Fraud Cell'}</td>
-        <td><span class="badge ${o.role === 'ADMIN' ? 'badge-priority-HIGH' : 'badge-status-SUBMITTED'}">${o.role}</span></td>
         <td>
-          <div style="display: flex; gap: 0.35rem;">
-            <button class="btn btn-sm btn-accent" style="padding: 0.35rem 0.65rem;" onclick="openEditOfficerForm('${o._id || o.officerId}')">✏️ Edit</button>
-            ${isSelf ? '' : `<button class="btn btn-sm btn-danger" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.35rem 0.65rem;" onclick="promptDeleteOfficer('${o._id || o.officerId}', '${o.name}')">🗑️ Delete</button>`}
+          <span class="badge" style="background: rgba(6,182,212,0.15); color: var(--accent-cyan); font-family: monospace; letter-spacing: 0.04em;">${o.badgeNumber}</span>
+        </td>
+        <td style="font-family: monospace; font-size: 0.86rem; color: #e2e8f0;">${o.email}</td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 0.4rem;">
+            <input type="password" readonly value="${pwd}" id="pwdInput_${o._id || o.officerId}" style="background: rgba(15,23,42,0.7); border: 1px solid var(--border-color); color: #f59e0b; font-family: monospace; font-size: 0.85rem; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); width: 110px; text-align: center;">
+            <button type="button" class="btn btn-sm btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.78rem;" onclick="toggleShowPassword('pwdInput_${o._id || o.officerId}')">👁️</button>
+          </div>
+        </td>
+        <td style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">${o.department || 'Financial Fraud Cell'}</td>
+        <td>
+          <span class="badge ${o.role === 'ADMIN' ? 'badge-priority-HIGH' : 'badge-status-SUBMITTED'}" style="font-size: 0.75rem; letter-spacing: 0.03em;">${o.role}</span>
+        </td>
+        <td style="padding-right: 1.25rem;">
+          <div style="display: flex; gap: 0.4rem;">
+            <button class="btn btn-sm btn-accent" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="openEditOfficerForm('${o._id || o.officerId}')">✏️ Edit</button>
+            ${isSelf ? '' : `<button class="btn btn-sm btn-danger" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="promptDeleteOfficer('${o._id || o.officerId}', '${o.name}')">🗑️ Delete</button>`}
           </div>
         </td>
       </tr>

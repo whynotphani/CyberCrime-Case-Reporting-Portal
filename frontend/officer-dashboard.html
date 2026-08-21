@@ -18,7 +18,7 @@
     <ul class="nav-links">
       <li><a href="index.html" class="nav-link">🏠 Home</a></li>
       <li><a href="officer-dashboard.html" class="nav-link active">🕵️ Officer Portal</a></li>
-      <li><button id="manageCredentialsNavBtn" class="btn btn-sm btn-accent" style="display: none; background: rgba(139, 92, 246, 0.25); border: 1px solid rgba(139, 92, 246, 0.5); color: #c084fc; font-weight: 600; padding: 0.4rem 0.85rem; margin-right: 0.5rem;">🔐 Manage Credentials</button></li>
+      <li><button id="manageCredentialsNavBtn" class="nav-link" style="display: none; border: none; background: transparent; cursor: pointer; font-family: inherit;">👥 Manage Officers</button></li>
       <li><span class="officer-badge-pill" id="officerNameBadge">Officer Logged In</span></li>
       <li><button id="logoutOfficerBtn" class="btn btn-sm btn-secondary">Logout</button></li>
     </ul>
@@ -325,17 +325,34 @@
     </div>
   </div>
 
-  <!-- Manage Credentials Pop-up Portal (Restricted to marpuphani00@gmail.com) -->
+  <!-- Manage Officers Pop-up Portal (Restricted to marpuphani00@gmail.com) -->
   <div id="manageCredentialsModal" class="modal-overlay">
-    <div class="modal-card modal-lg" style="max-width: 950px; max-height: 90vh; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
+    <div class="modal-card modal-lg" style="max-width: 960px; max-height: 90vh; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
       <style>
         #manageCredentialsModal .modal-card::-webkit-scrollbar { display: none; }
+        #manageCredentialsModal .data-table th {
+          background: rgba(15, 23, 42, 0.95);
+          font-size: 0.82rem;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          color: var(--accent-cyan);
+          padding: 0.9rem 1.25rem;
+          border-bottom: 2px solid var(--border-color);
+        }
+        #manageCredentialsModal .data-table td {
+          padding: 1rem 1.25rem;
+          vertical-align: middle;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        #manageCredentialsModal .data-table tr:hover td {
+          background: rgba(255, 255, 255, 0.04);
+        }
       </style>
       
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
         <div>
-          <span style="font-size: 0.8rem; color: #c084fc; font-weight: 700; letter-spacing: 0.05em;">SUPER ADMIN CREDENTIAL PORTAL</span>
-          <h3 style="font-size: 1.4rem; color: #fff; margin: 0;">🔐 Manage Officer Credentials</h3>
+          <span style="font-size: 0.78rem; color: #c084fc; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;">Super Admin Officer Management</span>
+          <h3 style="font-size: 1.45rem; color: #fff; margin: 0.15rem 0 0 0;">👥 Manage Officers</h3>
         </div>
         <button id="closeCredentialsModalBtn" class="btn btn-sm btn-secondary">✕ Close</button>
       </div>
@@ -431,6 +448,6 @@
 
   <script src="js/api.js"></script>
   <script src="js/mobile-nav.js"></script>
-  <script src="js/officer-dashboard.js?v=3.2"></script>
+  <script src="js/officer-dashboard.js?v=3.3"></script>
 </body>
 </html>
