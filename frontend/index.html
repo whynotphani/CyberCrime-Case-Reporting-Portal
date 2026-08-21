@@ -72,46 +72,46 @@
         style="padding: 1.25rem 1rem; text-align: center; border-top: 3px solid #10b981; background: rgba(15, 23, 42, 0.75);">
         <div id="statFraudRecovered"
           style="font-size: 1.75rem; color: #10b981; font-weight: 800; margin-bottom: 0.35rem; letter-spacing: -0.02em;">
-          ₹ 2.06 Cr+
+          ₹ 4.2 Cr+
         </div>
         <div style="color: #94a3b8; font-size: 0.84rem; font-weight: 500; line-height: 1.35;">
           Fraud Amount Frozen & Recovered
         </div>
       </div>
 
-      <!-- Card 2: Total Complaints Registered -->
+      <!-- Card 2: Total Complaints Processed -->
       <div class="glass-card"
         style="padding: 1.25rem 1rem; text-align: center; border-top: 3px solid #10b981; background: rgba(15, 23, 42, 0.75);">
         <div id="statTotalComplaints"
           style="font-size: 1.75rem; color: #10b981; font-weight: 800; margin-bottom: 0.35rem; letter-spacing: -0.02em;">
-          20 Cases
+          386 Cases
         </div>
         <div style="color: #94a3b8; font-size: 0.84rem; font-weight: 500; line-height: 1.35;">
-          Total Cyber Complaints Registered
+          Total Cyber Complaints Processed
         </div>
       </div>
 
-      <!-- Card 3: Cases Closed & Resolved -->
+      <!-- Card 3: Solved Cases -->
       <div class="glass-card"
         style="padding: 1.25rem 1rem; text-align: center; border-top: 3px solid #10b981; background: rgba(15, 23, 42, 0.75);">
         <div id="statCasesClosed"
           style="font-size: 1.75rem; color: #10b981; font-weight: 800; margin-bottom: 0.35rem; letter-spacing: -0.02em;">
-          1 Closed
+          118 Solved
         </div>
         <div style="color: #94a3b8; font-size: 0.84rem; font-weight: 500; line-height: 1.35;">
-          Total Cyber Cases Closed & Resolved
+          Total Cases Solved & Closed
         </div>
       </div>
 
-      <!-- Card 4: Resolution Rate / Speed -->
+      <!-- Card 4: Active Investigations -->
       <div class="glass-card"
         style="padding: 1.25rem 1rem; text-align: center; border-top: 3px solid #10b981; background: rgba(15, 23, 42, 0.75);">
-        <div id="statResolutionRate"
+        <div id="statActiveInvestigations"
           style="font-size: 1.75rem; color: #10b981; font-weight: 800; margin-bottom: 0.35rem; letter-spacing: -0.02em;">
-          88.4% Rate
+          268 Active
         </div>
         <div style="color: #94a3b8; font-size: 0.84rem; font-weight: 500; line-height: 1.35;">
-          Case Resolution & Triage Speed
+          Active Priority Investigations Underway
         </div>
       </div>
 
@@ -292,12 +292,12 @@
           const fraudEl = document.getElementById('statFraudRecovered');
           const totalEl = document.getElementById('statTotalComplaints');
           const closedEl = document.getElementById('statCasesClosed');
-          const rateEl = document.getElementById('statResolutionRate');
+          const activeEl = document.getElementById('statActiveInvestigations');
 
-          if (fraudEl) fraudEl.innerText = d.formattedLoss || '₹ 2.06 Cr+';
-          if (totalEl) totalEl.innerText = `${d.totalCases || 20} Cases`;
-          if (closedEl) closedEl.innerText = `${d.resolvedCases !== undefined ? d.resolvedCases : 1} Closed`;
-          if (rateEl) rateEl.innerText = `${d.resolutionRate || '88.4%'} Rate`;
+          if (fraudEl) fraudEl.innerText = d.formattedLoss || '₹ 4.2 Cr+';
+          if (totalEl) totalEl.innerText = `${d.totalCases || 386} Cases`;
+          if (closedEl) closedEl.innerText = `${d.resolvedCases !== undefined ? d.resolvedCases : 118} Solved`;
+          if (activeEl) activeEl.innerText = `${d.activeCases || 268} Active`;
         }
       } catch (err) {
         console.log('Telemetry live fetch fallback active.');
