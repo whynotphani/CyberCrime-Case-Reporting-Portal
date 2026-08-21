@@ -102,52 +102,26 @@
               <input type="text" id="complaintTitle" class="form-control" placeholder="e.g. Unauthorized Bank Transfer via Phishing Link" required minlength="3">
             </div>
 
-            <div class="form-row-grid">
-              <div class="form-group">
-                <label for="incidentDate">Date & Time of Incident</label>
-                <input type="datetime-local" id="incidentDate" class="form-control">
-              </div>
-
-              <div class="form-group">
-                <label for="lossAmount">Financial Loss Amount (₹ INR, if applicable)</label>
-                <input type="number" id="lossAmount" class="form-control" placeholder="e.g. 50000" min="0">
-              </div>
+            <div class="form-group">
+              <label for="incidentDate">Date & Time of Incident *</label>
+              <input type="datetime-local" id="incidentDate" class="form-control" required>
             </div>
 
             <div class="form-group">
-              <label for="description">Detailed Description of Cyber Incident *</label>
-              <textarea id="description" class="form-control" rows="4" placeholder="Describe chronologically what happened, messages received, fraudulent links clicked, unauthorized transactions..." required></textarea>
+              <label for="description">Detailed Description of Cyber Incident * <span style="font-size: 0.78rem; color: var(--text-dim);">(Minimum 30 characters)</span></label>
+              <textarea id="description" class="form-control" rows="4" placeholder="Describe chronologically what happened, messages received, fraudulent links clicked, unauthorized transactions..." required minlength="30"></textarea>
             </div>
 
-            <h4 style="font-size: 1rem; color: #fff; margin: 1.5rem 0 0.75rem;">Suspect Information (If Available)</h4>
-
-            <div class="form-row-grid">
-              <div class="form-group">
-                <label for="suspectName">Suspect Name / Fake Identity</label>
-                <input type="text" id="suspectName" class="form-control" placeholder="e.g. Alex Trader / Customer Care Fake">
-              </div>
-
-              <div class="form-group">
-                <label for="suspectPhone">Suspect Phone / WhatsApp Number</label>
-                <input type="tel" id="suspectPhone" class="form-control" placeholder="e.g. +91 9123456789">
-              </div>
+            <!-- Dynamic Category-Specific Fields Container -->
+            <div id="dynamicCategoryFields" style="margin-top: 1rem;">
+              <p style="color: var(--text-muted); font-size: 0.88rem; font-style: italic;">
+                💡 Please select a Cybercrime Category in Step 1 to load specific incident fields.
+              </p>
             </div>
 
-            <div class="form-row-grid">
-              <div class="form-group">
-                <label for="bankDetails">Suspect Bank Account / UPI ID</label>
-                <input type="text" id="bankDetails" class="form-control" placeholder="e.g. fraud@upi / HDFC 501000...">
-              </div>
-
-              <div class="form-group">
-                <label for="urlOrHandle">Fraudulent URL / Social Media Profile Link</label>
-                <input type="text" id="urlOrHandle" class="form-control" placeholder="e.g. https://phishing-site.com or @fraud_account">
-              </div>
-            </div>
-
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 1.25rem;">
               <label for="otherInfo">Other Relevant Clues / Notes</label>
-              <input type="text" id="otherInfo" class="form-control" placeholder="Any additional IP address, email headers, device IMEI, etc.">
+              <input type="text" id="otherInfo" class="form-control" placeholder="Any additional IP address, email headers, device info, or notes...">
             </div>
 
             <div style="margin-top: 1.5rem;">
@@ -163,12 +137,12 @@
           <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--accent-cyan);">
             Step 3: Upload Supporting Digital Evidence
           </h3>
-          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">
+          <p id="evidenceHelperText" style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">
             Upload transaction screenshots, WhatsApp chat logs, bank statements (PDF), emails, audio clips, or screen recordings. Max 10MB per file.
           </p>
 
           <div class="form-group" style="margin-bottom: 1rem;">
-            <label for="evidenceCategory">Evidence Type Category</label>
+            <label for="evidenceCategory">Evidence Type Category *</label>
             <select id="evidenceCategory" class="form-control">
               <option value="SCREENSHOT">Screenshot / Image Proof</option>
               <option value="BANK_STATEMENT">Bank Statement / Receipt (PDF)</option>
