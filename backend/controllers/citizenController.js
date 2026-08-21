@@ -4,7 +4,7 @@ const fs = require('fs');
 const Case = require('../models/Case');
 const Evidence = require('../models/Evidence');
 const CaseStatusHistory = require('../models/CaseStatusHistory');
-const { store } = require('../config/memoryDb');
+const { store, saveStore } = require('../config/memoryDb');
 
 /**
  * Fetch authenticated citizen's case details
@@ -171,6 +171,8 @@ exports.submitComplaint = async (req, res, next) => {
         timestamp: new Date()
       });
 
+      saveStore();
+
       return res.status(200).json({
         success: true,
         message: 'Stage 3 Completed: Complaint details saved successfully.',
@@ -242,6 +244,7 @@ exports.uploadEvidence = async (req, res, next) => {
         updatedByOfficer: null,
         timestamp: new Date()
       });
+      saveStore();
     }
 
     res.status(201).json({

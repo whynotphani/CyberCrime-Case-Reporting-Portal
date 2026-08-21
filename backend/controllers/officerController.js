@@ -5,7 +5,7 @@ const Case = require('../models/Case');
 const Evidence = require('../models/Evidence');
 const CaseStatusHistory = require('../models/CaseStatusHistory');
 const Officer = require('../models/Officer');
-const { store } = require('../config/memoryDb');
+const { store, saveStore } = require('../config/memoryDb');
 
 exports.getCases = async (req, res, next) => {
   try {
@@ -358,6 +358,8 @@ exports.createOfficerCredential = async (req, res, next) => {
       const existing = store.officers.find(o => o.email === newOfficer.email);
       if (existing) return res.status(400).json({ success: false, message: 'An officer with this email already exists.' });
       store.officers.push(newOfficer);
+      saveStore();
+      return res.status(201).json({ success: true, message: `Officer credential created for ${name}.`, data: newOfficer });
     }
 
     return res.status(201).json({ success: true, message: `Officer credential created for ${name}.`, data: newOfficer });
@@ -413,6 +415,7 @@ exports.updateOfficerCredential = async (req, res, next) => {
         off.plainPassword = password;
       }
 
+      saveStore();
       return res.status(200).json({ success: true, message: `Officer credentials updated successfully.`, data: off });
     }
   } catch (error) {
@@ -452,6 +455,7 @@ exports.deleteOfficerCredential = async (req, res, next) => {
       await Officer.findByIdAndDelete(officerId);
     } else {
       store.officers = store.officers.filter(o => o._id !== officerId && o.officerId !== officerId);
+      saveStore();
     }
 
     return res.status(200).json({ success: true, message: 'Officer credential deleted successfully.' });

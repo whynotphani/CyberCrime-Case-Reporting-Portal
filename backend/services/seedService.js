@@ -4,7 +4,7 @@ const Officer = require('../models/Officer');
 const Case = require('../models/Case');
 const Citizen = require('../models/Citizen');
 const CaseStatusHistory = require('../models/CaseStatusHistory');
-const { store } = require('../config/memoryDb');
+const { store, saveStore } = require('../config/memoryDb');
 
 async function seedOfficers() {
   const defaultPassword = 'password123';
@@ -76,7 +76,18 @@ async function seedOfficers() {
     }
   ];
 
-  store.officers = officersData;
+  if (!store.officers || store.officers.length === 0) {
+    store.officers = officersData;
+    saveStore();
+  } else {
+    for (const off of officersData) {
+      const exists = store.officers.some(o => o.email === off.email || o._id === off._id);
+      if (!exists) {
+        store.officers.push(off);
+      }
+    }
+    saveStore();
+  }
 
   if (mongoose.connection.readyState === 1) {
     for (const off of officersData) {
@@ -89,7 +100,7 @@ async function seedOfficers() {
     console.log('[Seed Service] Officer accounts seeded into MongoDB.');
   }
 
-  console.log('[Seed Service] In-memory officer accounts initialized.');
+  console.log('[Seed Service] Officer accounts loaded/initialized.');
 }
 
 function generate386Cases() {
@@ -247,9 +258,12 @@ function generate386Cases() {
 async function seedSampleCases() {
   const { cases: sampleCases, otpRecords, statusHistory } = generate386Cases();
 
-  store.cases = sampleCases;
-  store.otp_records = otpRecords;
-  store.case_status_history = statusHistory;
+  if (!store.cases || store.cases.length === 0) {
+    store.cases = sampleCases;
+    store.otp_records = otpRecords;
+    store.case_status_history = statusHistory;
+    saveStore();
+  }
 
   if (mongoose.connection.readyState === 1) {
     await Case.deleteMany({});
