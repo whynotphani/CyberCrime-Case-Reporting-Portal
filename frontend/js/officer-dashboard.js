@@ -587,22 +587,16 @@ function renderCredentialsTable(list) {
   tbody.innerHTML = filtered.map(o => {
     return `
       <tr>
-        <td style="padding: 1.1rem 1.25rem;">
+        <td style="padding: 1.15rem 1.25rem;">
           <div style="display: flex; align-items: center; gap: 0.75rem;">
             <div style="width: 38px; height: 38px; background: rgba(6,182,212,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0; border: 1px solid rgba(6,182,212,0.3);">👮‍♂️</div>
-            <div>
-              <div style="font-weight: 700; color: #fff; font-size: 0.98rem; font-family: var(--font-heading);">${o.name}</div>
-              <div style="font-size: 0.8rem; color: var(--accent-cyan); font-family: monospace; margin-top: 0.15rem;">
-                ${o.badgeNumber} • <span style="color: var(--text-muted); font-family: monospace;">${o.email}</span>
-              </div>
-            </div>
+            <div style="font-weight: 700; color: #fff; font-size: 1rem; font-family: var(--font-heading);">${o.name}</div>
           </div>
         </td>
-        <td style="padding: 1.1rem 1.25rem;">
-          <div style="font-size: 0.9rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.25rem;">${o.department || 'Financial Fraud Cell'}</div>
-          <span class="badge ${o.role === 'ADMIN' ? 'badge-priority-HIGH' : 'badge-status-SUBMITTED'}" style="font-size: 0.72rem; letter-spacing: 0.04em;">${o.role}</span>
+        <td style="padding: 1.15rem 1.25rem;">
+          <div style="font-size: 0.92rem; font-weight: 600; color: #e2e8f0;">${o.department || 'Financial Fraud Cell'}</div>
         </td>
-        <td style="padding: 1.1rem 1.25rem; text-align: right;">
+        <td style="padding: 1.15rem 1.25rem; text-align: right;">
           <button class="btn btn-sm btn-accent" style="padding: 0.45rem 0.95rem; font-size: 0.84rem; font-weight: 600;" onclick="openEditOfficerForm('${o._id || o.officerId}')">
             ✏️ Edit
           </button>
