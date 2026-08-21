@@ -64,13 +64,13 @@
       </span>
     </div>
 
-    <!-- Professional Cybercrime & Public Safety Dashboard Metrics Grid (Unified Color Theme) -->
+    <!-- Professional Cybercrime & Public Safety Dashboard Metrics Grid (Unified Color Theme & Realtime Telemetry) -->
     <div class="home-metrics-grid">
 
       <!-- Card 1: Financial Recovery -->
       <div class="glass-card"
         style="padding: 1.25rem 1rem; text-align: center; border-top: 3px solid #10b981; background: rgba(15, 23, 42, 0.75);">
-        <div
+        <div id="statFraudRecovered"
           style="font-size: 1.75rem; color: #10b981; font-weight: 800; margin-bottom: 0.35rem; letter-spacing: -0.02em;">
           ₹ 2.06 Cr+
         </div>
@@ -79,39 +79,39 @@
         </div>
       </div>
 
-      <!-- Card 2: Total Complaints -->
+      <!-- Card 2: Total Complaints Registered -->
       <div class="glass-card"
         style="padding: 1.25rem 1rem; text-align: center; border-top: 3px solid #10b981; background: rgba(15, 23, 42, 0.75);">
-        <div
+        <div id="statTotalComplaints"
           style="font-size: 1.75rem; color: #10b981; font-weight: 800; margin-bottom: 0.35rem; letter-spacing: -0.02em;">
-          20
+          20 Cases
         </div>
         <div style="color: #94a3b8; font-size: 0.84rem; font-weight: 500; line-height: 1.35;">
-          Cyber Complaints Processed
+          Total Cyber Complaints Registered
         </div>
       </div>
 
-      <!-- Card 3: Active Cases -->
+      <!-- Card 3: Active Priority Investigations -->
       <div class="glass-card"
         style="padding: 1.25rem 1rem; text-align: center; border-top: 3px solid #10b981; background: rgba(15, 23, 42, 0.75);">
-        <div
+        <div id="statActiveInvestigations"
           style="font-size: 1.75rem; color: #10b981; font-weight: 800; margin-bottom: 0.35rem; letter-spacing: -0.02em;">
-          16
+          19 Active
         </div>
         <div style="color: #94a3b8; font-size: 0.84rem; font-weight: 500; line-height: 1.35;">
-          Active Investigations
+          Cases Under Priority Investigation
         </div>
       </div>
 
       <!-- Card 4: Resolution Rate / Speed -->
       <div class="glass-card"
         style="padding: 1.25rem 1rem; text-align: center; border-top: 3px solid #10b981; background: rgba(15, 23, 42, 0.75);">
-        <div
+        <div id="statResolutionRate"
           style="font-size: 1.75rem; color: #10b981; font-weight: 800; margin-bottom: 0.35rem; letter-spacing: -0.02em;">
-          88.4%
+          88.4% Rate
         </div>
         <div style="color: #94a3b8; font-size: 0.84rem; font-weight: 500; line-height: 1.35;">
-          Case Resolution Rate (&lt;15m Avg. Triage)
+          Case Resolution & Triage Speed
         </div>
       </div>
 
@@ -282,6 +282,28 @@
 
   <script src="js/api.js"></script>
   <script src="js/mobile-nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('/api/public/stats');
+        const json = await res.json();
+        if (json.success && json.data) {
+          const d = json.data;
+          const fraudEl = document.getElementById('statFraudRecovered');
+          const totalEl = document.getElementById('statTotalComplaints');
+          const activeEl = document.getElementById('statActiveInvestigations');
+          const rateEl = document.getElementById('statResolutionRate');
+
+          if (fraudEl) fraudEl.innerText = d.formattedLoss || '₹ 2.06 Cr+';
+          if (totalEl) totalEl.innerText = `${d.totalCases || 20} Cases`;
+          if (activeEl) activeEl.innerText = `${d.activeCases || 19} Active`;
+          if (rateEl) rateEl.innerText = `${d.resolutionRate || '88.4%'} Rate`;
+        }
+      } catch (err) {
+        console.log('Telemetry live fetch fallback active.');
+      }
+    });
+  </script>
 </body>
 
 </html>
